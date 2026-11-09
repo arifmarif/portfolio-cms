@@ -1,0 +1,57 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model SiteConfig {
+  id        String   @id @default("singleton")
+  published Json
+  draft     Json
+  updatedAt DateTime @updatedAt
+}
+
+model Project {
+  id           String   @id
+  slug         String   @unique
+  title        String
+  category     String
+  excerpt      String
+  description  String
+  thumbnailUrl String
+  altText      String
+  tags         String[]
+  client       String?
+  year         String?
+  status       String
+  order        Int
+  featured     Boolean  @default(false)
+  gallery      Json
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model DownloadSubmission {
+  id        String   @id
+  email     String
+  phone     String
+  pdfName   String
+  createdAt DateTime @default(now())
+}
+
+model AuditLog {
+  id        String   @id
+  action    String
+  detail    String?
+  createdAt DateTime @default(now())
+}
+
+model ContactMessage {
+  id        String   @id
+  name      String
+  email     String
+  message   String
+  createdAt DateTime @default(now())
+}

@@ -1,26 +1,139 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Dark-first palette (Editorial Slate & Terracotta) */
+  --surface: #10141a;
+  --surface-dim: #10141a;
+  --surface-bright: #353940;
+  --surface-container-lowest: #0a0e14;
+  --surface-container-low: #181c22;
+  --surface-container: #1c2026;
+  --surface-container-high: #262a31;
+  --surface-container-highest: #31353c;
+
+  --on-surface: #dfe2eb;
+  --on-surface-variant: #ddc0b8;
+  --inverse-surface: #dfe2eb;
+  --inverse-on-surface: #2d3137;
+
+  --outline: #a58b84;
+  --outline-variant: #57423c;
+  --surface-tint: #ffb59f;
+
+  --primary: #ffb59f;
+  --on-primary: #5f1600;
+  --primary-container: #e26f4c;
+  --on-primary-container: #531200;
+  --inverse-primary: #a13f20;
+  --primary-fixed: #ffdbd1;
+  --primary-fixed-dim: #ffb59f;
+
+  --secondary: #44e2cd;
+  --on-secondary: #003731;
+  --secondary-container: #03c6b2;
+  --on-secondary-container: #004d44;
+
+  --tertiary: #f5bc7e;
+  --on-tertiary: #482900;
+  --tertiary-container: #b9874e;
+  --on-tertiary-container: #3f2300;
+
+  --error: #ffb4ab;
+  --on-error: #690005;
+  --error-container: #93000a;
+  --on-error-container: #ffdad6;
+
+  --background: #10141a;
+  --foreground: #dfe2eb;
+
+  --radius-sm: 0.25rem;
+  --radius: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --radius-full: 9999px;
 }
 
 @theme inline {
+  --color-surface: var(--surface);
+  --color-surface-dim: var(--surface-dim);
+  --color-surface-bright: var(--surface-bright);
+  --color-surface-container-lowest: var(--surface-container-lowest);
+  --color-surface-container-low: var(--surface-container-low);
+  --color-surface-container: var(--surface-container);
+  --color-surface-container-high: var(--surface-container-high);
+  --color-surface-container-highest: var(--surface-container-highest);
+
+  --color-on-surface: var(--on-surface);
+  --color-on-surface-variant: var(--on-surface-variant);
+
+  --color-outline: var(--outline);
+  --color-outline-variant: var(--outline-variant);
+  --color-surface-tint: var(--surface-tint);
+
+  --color-primary: var(--primary);
+  --color-on-primary: var(--on-primary);
+  --color-primary-container: var(--primary-container);
+  --color-on-primary-container: var(--on-primary-container);
+  --color-inverse-primary: var(--inverse-primary);
+  --color-primary-fixed: var(--primary-fixed);
+  --color-primary-fixed-dim: var(--primary-fixed-dim);
+
+  --color-secondary: var(--secondary);
+  --color-on-secondary: var(--on-secondary);
+  --color-secondary-container: var(--secondary-container);
+  --color-on-secondary-container: var(--on-secondary-container);
+
+  --color-tertiary: var(--tertiary);
+  --color-on-tertiary: var(--on-tertiary);
+  --color-tertiary-container: var(--tertiary-container);
+  --color-on-tertiary-container: var(--on-tertiary-container);
+
+  --color-error: var(--error);
+  --color-on-error: var(--on-error);
+  --color-error-container: var(--error-container);
+  --color-on-error-container: var(--on-error-container);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-jakarta);
+  --font-mono: var(--font-jetbrains);
+
+  --radius-sm: var(--radius-sm);
+  --radius: var(--radius);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+  --radius-full: var(--radius-full);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-inter), system-ui, sans-serif;
 }
+
+.material-symbols-outlined {
+  font-family: "Material Symbols Outlined", sans-serif;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: "liga";
+  font-feature-settings: "liga";
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Scrollbar hidden utility (matches prototype) */
+::-webkit-scrollbar { display: none; }
+* { scrollbar-width: none; }
+
+/* (content protection styles applied conditionally via ContentProtection) */
