@@ -25,11 +25,8 @@ export async function updateDraftSettings(formData: FormData) {
   const idChanged = newBrand !== draft.brandName || newTagline !== draft.tagline || newHeroTitle !== draft.heroTitle || newHeroSubtitle !== draft.heroSubtitle;
   draft.brandName = newBrand;
   draft.tagline = newTagline;
-  draft.taglineEn = String(formData.get("taglineEn") || draft.taglineEn || "");
   draft.heroTitle = newHeroTitle;
-  draft.heroTitleEn = String(formData.get("heroTitleEn") || draft.heroTitleEn || "");
   draft.heroSubtitle = newHeroSubtitle;
-  draft.heroSubtitleEn = String(formData.get("heroSubtitleEn") || draft.heroSubtitleEn || "");
   draft.location = String(formData.get("location") || draft.location);
   draft.experienceYears = Number(formData.get("experienceYears") || draft.experienceYears);
   draft.projectsCount = Number(formData.get("projectsCount") || draft.projectsCount);

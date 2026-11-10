@@ -53,12 +53,17 @@ export function EditorialTemplate({ settings, projects }: { settings: SiteSettin
         <div className="max-w-[1320px] mx-auto px-4 md:px-8 py-4 flex items-center justify-between">
           <a href="#" className="flex items-center gap-2">
             <span className="font-display text-lg font-bold text-on-surface">{settings.brandName}</span>
-            <span className="hidden sm:block text-xs text-outline uppercase tracking-wider">{settings.tagline}</span>
+            <span className="hidden sm:block text-xs text-outline uppercase tracking-wider">{tx.tagline}</span>
           </a>
           <nav className="hidden md:flex items-center gap-6">
-            {[L.tentang, L.karya, L.pendekatan, L.kontak].map((n) => (
-              <a key={n} href={`#${n.toLowerCase()}`} className="text-sm text-on-surface-variant hover:text-on-surface">
-                {n}
+            {[
+              { label: L.tentang, href: "#tentang" },
+              { label: L.karya, href: "#karya" },
+              { label: L.pendekatan, href: "#pendekatan" },
+              { label: L.kontak, href: "#kontak" },
+            ].map((n) => (
+              <a key={n.label} href={n.href} className="text-sm text-on-surface-variant hover:text-on-surface">
+                {n.label}
               </a>
             ))}
           </nav>
@@ -114,7 +119,7 @@ export function EditorialTemplate({ settings, projects }: { settings: SiteSettin
           </div>
         </section>
 
-        <section className="bg-surface-container-lowest py-16">
+        <section id="tentang" className="bg-surface-container-lowest py-16">
           <div className="max-w-[1320px] mx-auto px-4 md:px-8">
             <h2 className="font-display text-3xl md:text-4xl font-semibold mb-8">{L.prinsip}</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -157,7 +162,7 @@ export function EditorialTemplate({ settings, projects }: { settings: SiteSettin
           </div>
         </section>
 
-        <section className="bg-surface-container-lowest py-16">
+        <section id="pendekatan" className="bg-surface-container-lowest py-16">
           <div className="max-w-[1320px] mx-auto px-4 md:px-8">
             <h2 className="font-display text-3xl md:text-4xl font-semibold mb-8">{L.proses}</h2>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
