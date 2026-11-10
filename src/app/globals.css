@@ -132,8 +132,5 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Scrollbar hidden utility (matches prototype) */
-::-webkit-scrollbar { display: none; }
-* { scrollbar-width: none; }
-
+/* Keep the native scrollbar available so long pages remain easy to navigate. */
 /* (content protection styles applied conditionally via ContentProtection) */
