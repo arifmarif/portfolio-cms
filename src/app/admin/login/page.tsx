@@ -54,7 +54,7 @@ export default function AdminLogin() {
         >
           {loading ? "Memproses..." : "Masuk"}
         </button>
-        <p className="text-xs text-outline">Default: admin123 (set ADMIN_PASSWORD di .env)</p>
+        <p className="text-xs text-outline">Kata sandi diatur via ADMIN_PASSWORD.</p>
       </form>
     </div>
   );

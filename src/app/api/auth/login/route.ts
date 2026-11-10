@@ -25,7 +25,11 @@ export async function POST(req: Request) {
   }
 
   const { password, code } = await req.json();
-  const expected = process.env.ADMIN_PASSWORD || "admin123";
+  const expected = process.env.ADMIN_PASSWORD;
+  if (!expected) {
+    console.error("[security] ADMIN_PASSWORD not configured");
+    return NextResponse.json({ ok: false, error: "Server misconfigured." }, { status: 500 });
+  }
 
   if (password !== expected) {
     console.warn(`[security] failed login ip=${ip}`);
