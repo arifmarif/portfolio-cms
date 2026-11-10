@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { Menu, X, ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 import type { Project, SiteSettings } from "@/lib/types";
 import ImageGallery from "@/components/ImageGallery";
@@ -32,6 +33,7 @@ const labels = {
 
 export function EditorialTemplate({ settings, projects }: { settings: SiteSettings; projects: Project[] }) {
   const [locale, setLocale] = useState<"id" | "en">("id");
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const saved = localStorage.getItem("locale");
@@ -55,14 +57,14 @@ export function EditorialTemplate({ settings, projects }: { settings: SiteSettin
             <span className="font-display text-lg font-bold text-on-surface">{settings.brandName}</span>
             <span className="hidden sm:block text-xs text-outline uppercase tracking-wider">{tx.tagline}</span>
           </a>
-          <nav className="hidden md:flex items-center gap-6">
+          <nav className="hidden md:flex items-center gap-6" aria-label="Primary navigation">
             {[
               { label: L.tentang, href: "#tentang" },
               { label: L.karya, href: "#karya" },
               { label: L.pendekatan, href: "#pendekatan" },
               { label: L.kontak, href: "#kontak" },
             ].map((n) => (
-              <a key={n.label} href={n.href} className="text-sm text-on-surface-variant hover:text-on-surface">
+              <a key={n.label} href={n.href} className="text-sm text-on-surface-variant hover:text-on-surface transition-colors">
                 {n.label}
               </a>
             ))}
@@ -79,11 +81,34 @@ export function EditorialTemplate({ settings, projects }: { settings: SiteSettin
                 {locale === "en" ? "Available" : "Tersedia"}
               </span>
             )}
-            <a href="#kontak" className="px-4 py-2 rounded-lg bg-primary text-on-primary text-sm font-medium hover:bg-primary-fixed-dim">
+            <a href="#kontak" className="hidden sm:inline-flex px-4 py-2 rounded-lg bg-primary text-on-primary text-sm font-medium hover:bg-primary-fixed-dim transition-colors">
               {locale === "en" ? "Contact Me" : "Hubungi Saya"}
             </a>
+            <button
+              type="button"
+              className="md:hidden inline-flex items-center justify-center size-10 rounded-lg text-on-surface hover:bg-surface-container-high transition-colors"
+              aria-label={menuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={menuOpen}
+              onClick={() => setMenuOpen((open) => !open)}
+            >
+              {menuOpen ? <X aria-hidden="true" /> : <Menu aria-hidden="true" />}
+            </button>
           </div>
         </div>
+        {menuOpen && (
+          <nav className="md:hidden border-t border-outline-variant/30 px-4 py-3 flex flex-col gap-1" aria-label="Mobile navigation">
+            {[
+              { label: L.tentang, href: "#tentang" },
+              { label: L.karya, href: "#karya" },
+              { label: L.pendekatan, href: "#pendekatan" },
+              { label: L.kontak, href: "#kontak" },
+            ].map((n) => (
+              <a key={n.label} href={n.href} onClick={() => setMenuOpen(false)} className="rounded-lg px-3 py-3 text-sm text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface">
+                {n.label}
+              </a>
+            ))}
+          </nav>
+        )}
       </header>
 
       <main>
@@ -94,13 +119,14 @@ export function EditorialTemplate({ settings, projects }: { settings: SiteSettin
               <h1 className="font-display text-4xl md:text-6xl font-bold leading-tight">{tx.heroTitle}</h1>
               <p className="text-lg text-on-surface-variant max-w-2xl">{tx.heroSubtitle}</p>
               <div className="flex flex-wrap gap-3 pt-2">
-                <a href="#karya" className="px-6 py-3 rounded-lg bg-primary-container text-on-primary-container font-medium hover:bg-primary">
+                <a href="#karya" className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-primary text-on-primary font-medium hover:bg-primary-fixed-dim transition-colors">
                   {L.lihat}
+                  <ArrowUpRight aria-hidden="true" />
                 </a>
-                <a href="#kontak" className="px-6 py-3 rounded-lg bg-surface-container-high text-on-surface font-medium hover:bg-surface-bright">
+                <a href="#kontak" className="px-6 py-3 rounded-lg text-on-surface font-medium underline decoration-outline-variant underline-offset-4 hover:text-primary transition-colors">
                   {L.hubungi}
                 </a>
-                <DownloadGate label={locale === "en" ? "Download Portfolio (PDF)" : "Unduh Portofolio (PDF)"} />
+                <DownloadGate label={locale === "en" ? "Download PDF" : "Unduh PDF"} />
               </div>
               <div className="pt-4 flex flex-wrap gap-4 text-outline font-mono text-xs">
                 <span>{settings.experienceYears}+ {locale === "en" ? "years experience" : "tahun pengalaman"}</span>
@@ -121,7 +147,10 @@ export function EditorialTemplate({ settings, projects }: { settings: SiteSettin
 
         <section id="tentang" className="bg-surface-container-lowest py-16">
           <div className="max-w-[1320px] mx-auto px-4 md:px-8">
-            <h2 className="font-display text-3xl md:text-4xl font-semibold mb-8">{L.prinsip}</h2>
+            <div className="mb-8 flex items-end justify-between gap-6 border-b border-outline-variant/40 pb-4">
+              <h2 className="font-display text-3xl md:text-4xl font-semibold">{L.prinsip}</h2>
+              <span className="hidden sm:block font-mono text-xs text-outline">01 / 03</span>
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {[
                 { t: locale === "en" ? "Reliable Infrastructure" : "Keandalan Infrastruktur", d: locale === "en" ? "Keep networks and systems stable." : "Menjaga jaringan dan sistem tetap stabil." },
@@ -152,8 +181,16 @@ export function EditorialTemplate({ settings, projects }: { settings: SiteSettin
                           <span key={t} className="text-xs px-2 py-0.5 rounded-full bg-primary-container/20 text-primary">{t}</span>
                         ))}
                       </div>
-                      <h3 className="font-display text-xl font-semibold group-hover:text-primary transition">{pt.title}</h3>
+                      <div className="flex items-start justify-between gap-4">
+                        <h3 className="font-display text-xl font-semibold group-hover:text-primary transition">{pt.title}</h3>
+                        {p.year && <span className="shrink-0 text-xs font-mono text-outline">{p.year}</span>}
+                      </div>
                       <p className="text-on-surface-variant text-sm">{pt.excerpt}</p>
+                      {(p.client || p.category) && (
+                        <p className="pt-2 text-xs font-mono uppercase tracking-wider text-outline">
+                          {[p.client, p.category].filter(Boolean).join(" · ")}
+                        </p>
+                      )}
                     </div>
                   </article>
                 );
