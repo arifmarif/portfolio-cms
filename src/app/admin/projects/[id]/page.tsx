@@ -23,13 +23,19 @@ export default async function EditProjectPage({ params }: { params: Promise<{ id
         <h1 className="font-display text-2xl font-bold">Edit Proyek</h1>
         <form action={action} className="space-y-4 rounded-xl bg-surface-container-low p-6">
           <Field label="Judul" name="title" defaultValue={p.title} required />
+          <Field label="Judul (EN)" name="titleEn" defaultValue={p.titleEn || ""} />
           <Field label="Kategori" name="category" defaultValue={p.category} />
+          <Field label="Kategori (EN)" name="categoryEn" defaultValue={p.categoryEn || ""} />
           <Field label="Ringkasan" name="excerpt" defaultValue={p.excerpt} />
+          <Field label="Ringkasan (EN)" name="excerptEn" defaultValue={p.excerptEn || ""} />
           <Field label="Deskripsi" name="description" defaultValue={p.description} textarea />
+          <Field label="Deskripsi (EN)" name="descriptionEn" defaultValue={p.descriptionEn || ""} textarea />
           <Field label="URL Thumbnail (cover)" name="thumbnailUrl" defaultValue={p.thumbnailUrl} />
           <Field label="Alt Text (cover)" name="altText" defaultValue={p.altText} />
+          <Field label="Alt Text (EN)" name="altTextEn" defaultValue={p.altTextEn || ""} />
           <GalleryEditor defaultValue={p.gallery || []} />
           <Field label="Tag (pisah koma)" name="tags" defaultValue={p.tags.join(", ")} />
+          <Field label="Tag (EN, pisah koma)" name="tagsEn" defaultValue={(p.tagsEn || []).join(", ")} />
           <Field label="Klien" name="client" defaultValue={p.client || ""} />
           <Field label="Tahun" name="year" defaultValue={p.year || ""} />
           <div>

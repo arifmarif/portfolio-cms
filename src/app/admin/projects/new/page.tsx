@@ -17,13 +17,19 @@ function ProjectForm({ action, submitLabel }: { action: (fd: FormData) => Promis
   return (
     <form action={action} className="space-y-4 rounded-xl bg-surface-container-low p-6">
       <Field label="Judul" name="title" required />
+      <Field label="Judul (EN)" name="titleEn" />
       <Field label="Kategori" name="category" />
+      <Field label="Kategori (EN)" name="categoryEn" />
       <Field label="Ringkasan" name="excerpt" />
+      <Field label="Ringkasan (EN)" name="excerptEn" />
       <Field label="Deskripsi" name="description" textarea />
+      <Field label="Deskripsi (EN)" name="descriptionEn" textarea />
       <Field label="URL Thumbnail (cover)" name="thumbnailUrl" />
       <Field label="Alt Text (cover)" name="altText" />
+      <Field label="Alt Text (EN)" name="altTextEn" />
       <GalleryEditor defaultValue={[]} />
       <Field label="Tag (pisah koma)" name="tags" />
+      <Field label="Tag (EN, pisah koma)" name="tagsEn" />
       <Field label="Klien" name="client" />
       <Field label="Tahun" name="year" />
       <div>

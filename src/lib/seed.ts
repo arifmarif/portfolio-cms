@@ -3,9 +3,13 @@ import type { Project, SiteSettings, Template } from "./types";
 export const seedSettings: SiteSettings = {
   brandName: "Arif Rizki",
   tagline: "Network & IT Support Engineer",
+  taglineEn: "Network & IT Support Engineer",
   heroTitle: "Membangun dan Memelihara Infrastruktur TI yang Andal dan Efisien.",
+  heroTitleEn: "Building and Maintaining Reliable and Efficient IT Infrastructure.",
   heroSubtitle:
     "Lulusan S1 Sistem Informasi dengan pengalaman profesional di bidang jaringan dan dukungan TI. Terampil dalam pemecahan masalah jaringan, konfigurasi MikroTik, router, switch, access point, serta pengelolaan LAN/Wi-Fi dan konektivitas internet. Berpengalaman memasang, memelihara, dan memantau infrastruktur TI untuk mendukung kelancaran operasional bisnis.",
+  heroSubtitleEn:
+    "Information Systems graduate with professional experience in networking and IT support. Skilled in network troubleshooting, MikroTik configuration, routers, switches, access points, and LAN/Wi-Fi and internet connectivity management. Experienced in installing, maintaining, and monitoring IT infrastructure to support smooth business operations.",
   location: "Depok, Jawa Barat, ID",
   experienceYears: 4,
   projectsCount: 6,
@@ -21,6 +25,8 @@ export const seedSettings: SiteSettings = {
   primaryColor: "#e26f4c",
   activeTemplateId: "editorial",
   draftUpdatedAt: new Date().toISOString(),
+  idUpdatedAt: new Date().toISOString(),
+  enUpdatedAt: new Date().toISOString(),
   publishedAt: new Date().toISOString(),
 };
 
@@ -29,11 +35,16 @@ export const seedProjects: Project[] = [
     id: "1",
     slug: "infrastruktur-jaringan-pt-union",
     title: "Infrastruktur Jaringan PT Union Makmur Abadi",
+    titleEn: "Network Infrastructure at PT Union Makmur Abadi",
     category: "Networking",
+    categoryEn: "Networking",
     excerpt: "Konfigurasi dan pemeliharaan jaringan MikroTik, switch, AP, dan CCTV.",
+    excerptEn: "Configuration and maintenance of MikroTik networks, switches, APs, and CCTV.",
     description: "Menangani pemecahan masalah jaringan, komputer, dan perangkat pendukung operasional. Mengonfigurasi dan memelihara infrastruktur jaringan termasuk router MikroTik, router, switch, access point, dan sistem CCTV. Melakukan pencadangan dan pemulihan data bisnis penting secara berkala serta mengatasi kendala konektivitas LAN, Wi-Fi, dan internet.",
+    descriptionEn: "Handles network, computer, and operational device troubleshooting. Configures and maintains network infrastructure including MikroTik routers, switches, access points, and CCTV systems. Performs regular backup and recovery of critical business data and resolves LAN, Wi-Fi, and internet connectivity issues.",
     thumbnailUrl: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800",
     altText: "Rak jaringan dengan router dan switch",
+    altTextEn: "Network rack with router and switch",
     gallery: [{ url: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800", alt: "Rak jaringan dengan router dan switch" }],
     tags: ["MikroTik", "LAN/Wi-Fi", "CCTV", "Backup"],
     client: "PT Union Makmur Abadi",
@@ -41,6 +52,8 @@ export const seedProjects: Project[] = [
     status: "PUBLISHED",
     order: 1,
     featured: true,
+    idUpdatedAt: new Date().toISOString(),
+    enUpdatedAt: new Date().toISOString(),
   },
   {
     id: "2",

@@ -72,6 +72,7 @@ export default function DashboardClient({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Field label="Nama Tampilan" value={draft.brandName} onChange={(v) => update("brandName", v)} />
               <Field label="Gelar Profesi" value={draft.tagline} onChange={(v) => update("tagline", v)} />
+              <Field label="Gelar Profesi (EN)" value={draft.taglineEn || ""} onChange={(v) => update("taglineEn", v)} />
               <div className="md:col-span-2">
                 <label className="block text-sm text-on-surface-variant mb-1">Pernyataan Utama ({heroLen}/{heroMax})</label>
                 <input
@@ -82,11 +83,29 @@ export default function DashboardClient({
                 />
               </div>
               <div className="md:col-span-2">
+                <label className="block text-sm text-on-surface-variant mb-1">Pernyataan Utama (EN) ({(draft.heroTitleEn || "").length}/{heroMax})</label>
+                <input
+                  value={draft.heroTitleEn || ""}
+                  maxLength={heroMax}
+                  onChange={(e) => update("heroTitleEn", e.target.value)}
+                  className="w-full rounded-lg bg-surface-container-lowest px-3 py-2 text-on-surface ring-1 ring-outline-variant focus:ring-primary"
+                />
+              </div>
+              <div className="md:col-span-2">
                 <label className="block text-sm text-on-surface-variant mb-1">Bio Singkat</label>
                 <textarea
                   value={draft.heroSubtitle}
                   rows={3}
                   onChange={(e) => update("heroSubtitle", e.target.value)}
+                  className="w-full rounded-lg bg-surface-container-lowest px-3 py-2 text-on-surface ring-1 ring-outline-variant focus:ring-primary"
+                />
+              </div>
+              <div className="md:col-span-2">
+                <label className="block text-sm text-on-surface-variant mb-1">Bio Singkat (EN)</label>
+                <textarea
+                  value={draft.heroSubtitleEn || ""}
+                  rows={3}
+                  onChange={(e) => update("heroSubtitleEn", e.target.value)}
                   className="w-full rounded-lg bg-surface-container-lowest px-3 py-2 text-on-surface ring-1 ring-outline-variant focus:ring-primary"
                 />
               </div>
@@ -129,6 +148,9 @@ export default function DashboardClient({
               Terbitkan
             </button>
             {status && <span className="text-sm text-on-surface-variant self-center">{status}</span>}
+            {((draft.idUpdatedAt || "") > (draft.enUpdatedAt || "")) && (
+              <span className="text-sm text-tertiary self-center">Terjemahan EN perlu diperbarui</span>
+            )}
           </div>
           <p className="text-xs text-outline">Terakhir disimpan: {new Date(draft.draftUpdatedAt).toLocaleString("id-ID")}</p>
         </div>

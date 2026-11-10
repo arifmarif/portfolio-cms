@@ -4,13 +4,21 @@ export interface Project {
   id: string;
   slug: string;
   title: string;
+  titleEn?: string;
   category: string;
+  categoryEn?: string;
   excerpt: string;
+  excerptEn?: string;
   description: string;
+  descriptionEn?: string;
   thumbnailUrl: string;
   altText: string;
-  gallery: { url: string; alt: string }[];
+  altTextEn?: string;
+  gallery: { url: string; alt: string; altEn?: string }[];
+  idUpdatedAt?: string;
+  enUpdatedAt?: string;
   tags: string[];
+  tagsEn?: string[];
   client?: string;
   year?: string;
   status: ProjectStatus;
@@ -21,8 +29,11 @@ export interface Project {
 export interface SiteSettings {
   brandName: string;
   tagline: string;
+  taglineEn?: string;
   heroTitle: string;
+  heroTitleEn?: string;
   heroSubtitle: string;
+  heroSubtitleEn?: string;
   location: string;
   experienceYears: number;
   projectsCount: number;
@@ -38,6 +49,8 @@ export interface SiteSettings {
   primaryColor: string;
   activeTemplateId: string;
   draftUpdatedAt: string;
+  idUpdatedAt?: string;
+  enUpdatedAt?: string;
   publishedAt?: string;
 }
 
