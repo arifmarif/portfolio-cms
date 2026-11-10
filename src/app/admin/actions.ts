@@ -27,7 +27,9 @@ export async function updateDraftSettings(formData: FormData) {
   draft.projectsCount = Number(formData.get("projectsCount") || draft.projectsCount);
   draft.email = String(formData.get("email") || draft.email);
   draft.phone = String(formData.get("phone") || draft.phone);
+  draft.whatsapp = String(formData.get("whatsapp") || draft.whatsapp);
   draft.photoUrl = String(formData.get("photoUrl") || draft.photoUrl);
+  draft.timezone = String(formData.get("timezone") || draft.timezone);
   draft.linkedin = String(formData.get("linkedin") || draft.linkedin);
   draft.github = String(formData.get("github") || draft.github);
   draft.portfolioUrl = String(formData.get("portfolioUrl") || draft.portfolioUrl);

@@ -28,7 +28,9 @@ export interface SiteSettings {
   projectsCount: number;
   email: string;
   phone: string;
+  whatsapp: string;
   photoUrl: string;
+  timezone: string;
   linkedin: string;
   github: string;
   portfolioUrl: string;
