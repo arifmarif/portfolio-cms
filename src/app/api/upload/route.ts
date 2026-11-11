@@ -1,15 +1,14 @@
 import { NextResponse } from "next/server";
 import { writeFile, mkdir } from "fs/promises";
 import path from "path";
-import { cookies } from "next/headers";
 import { put } from "@vercel/blob";
+import { isAdmin } from "@/lib/auth";
 
 const MAX_SIZE = 5 * 1024 * 1024;
 const ALLOWED = ["image/jpeg", "image/png", "image/webp", "image/gif"];
 
 export async function POST(req: Request) {
-  const jar = await cookies();
-  if (jar.get("admin_session")?.value !== "ok") {
+  if (!(await isAdmin())) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -19,9 +18,12 @@ export async function POST(req: Request) {
   if (!ALLOWED.includes(file.type)) return NextResponse.json({ error: "Tipe file tidak diizinkan." }, { status: 400 });
   if (file.size > MAX_SIZE) return NextResponse.json({ error: "Ukuran file melebihi 5MB." }, { status: 400 });
 
+  const ext = path.extname(file.name).toLowerCase().replace(/[^.a-z0-9]/g, "") || "";
+  const name = `${crypto.randomUUID()}${ext}`;
+
   // Prefer Vercel Blob when available (production)
   if (process.env.BLOB_READ_WRITE_TOKEN) {
-    const blob = await put(`uploads/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g, "_")}`, file, {
+    const blob = await put(`uploads/${name}`, file, {
       access: "public",
       contentType: file.type,
     });
@@ -33,7 +35,6 @@ export async function POST(req: Request) {
   const buffer = Buffer.from(bytes);
   const uploadsDir = path.join(process.cwd(), "public", "uploads");
   await mkdir(uploadsDir, { recursive: true });
-  const safeName = `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g, "_")}`;
-  await writeFile(path.join(uploadsDir, safeName), buffer);
-  return NextResponse.json({ url: `/uploads/${safeName}` });
+  await writeFile(path.join(uploadsDir, name), buffer);
+  return NextResponse.json({ url: `/uploads/${name}` });
 }

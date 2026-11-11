@@ -1,4 +1,5 @@
 import { readState } from "@/lib/db";
+import { requireAdmin } from "@/lib/auth";
 import { AdminShell } from "@/components/AdminShell";
 import { deleteProject } from "../actions";
 import Link from "next/link";
@@ -6,6 +7,7 @@ import Link from "next/link";
 export const dynamic = "force-dynamic";
 
 export default async function ProjectsPage() {
+  await requireAdmin();
   const state = await readState();
   return (
     <AdminShell active="projects">

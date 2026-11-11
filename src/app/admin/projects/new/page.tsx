@@ -1,8 +1,10 @@
+import { requireAdmin } from "@/lib/auth";
 import { AdminShell } from "@/components/AdminShell";
 import { createProject } from "../../actions";
 import GalleryEditor from "@/components/GalleryEditor";
 
-export default function NewProjectPage() {
+export default async function NewProjectPage() {
+  await requireAdmin();
   return (
     <AdminShell active="projects">
       <div className="max-w-2xl space-y-4">

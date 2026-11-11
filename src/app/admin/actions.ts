@@ -81,7 +81,7 @@ export async function updateActiveTemplate(templateId: string) {
 export async function createProject(formData: FormData) {
   await requireAdmin();
   const state = await readState();
-  const id = String(Date.now());
+  const id = crypto.randomUUID();
   const title = String(formData.get("title") || "Proyek Baru");
   const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
   const project = {

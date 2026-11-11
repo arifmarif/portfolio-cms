@@ -1,11 +1,12 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { SESSION_COOKIE, verifySessionToken } from "@/lib/session";
 
-export function proxy(req: NextRequest) {
+export async function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
   if (pathname.startsWith("/admin") && pathname !== "/admin/login") {
-    const session = req.cookies.get("admin_session")?.value;
-    if (session !== "ok") {
+    const token = req.cookies.get(SESSION_COOKIE)?.value;
+    if (!(await verifySessionToken(token))) {
       const url = req.nextUrl.clone();
       url.pathname = "/admin/login";
       return NextResponse.redirect(url);

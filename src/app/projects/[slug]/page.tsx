@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+import { cache } from "react";
 import { readState } from "@/lib/db";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -5,10 +7,29 @@ import ImageGallery from "@/components/ImageGallery";
 
 export const dynamic = "force-dynamic";
 
+const getPublishedProject = cache(async (slug: string) => {
+  const state = await readState();
+  return state.projects.find((p) => p.slug === slug && p.status === "PUBLISHED") ?? null;
+});
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const project = await getPublishedProject(slug);
+  if (!project) return {};
+  return {
+    title: project.title,
+    description: project.excerpt,
+    openGraph: {
+      title: project.title,
+      description: project.excerpt,
+      images: [{ url: project.thumbnailUrl }],
+    },
+  };
+}
+
 export default async function ProjectDetail({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const state = await readState();
-  const project = state.projects.find((p) => p.slug === slug);
+  const project = await getPublishedProject(slug);
   if (!project) notFound();
   return (
     <div className="min-h-screen bg-background text-on-surface">

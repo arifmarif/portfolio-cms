@@ -1,10 +1,12 @@
 import { readState } from "@/lib/db";
+import { requireAdmin } from "@/lib/auth";
 import { AdminShell } from "@/components/AdminShell";
 import GalleryEditor from "@/components/GalleryEditor";
 
 export const dynamic = "force-dynamic";
 
 export default async function EditProjectPage({ params }: { params: Promise<{ id: string }> }) {
+  await requireAdmin();
   const { id } = await params;
   const state = await readState();
   const p = state.projects.find((x) => x.id === id);

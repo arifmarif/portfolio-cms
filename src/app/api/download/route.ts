@@ -35,7 +35,7 @@ export async function POST(req: Request) {
     }
 
     const submission: DownloadSubmission = {
-      id: String(Date.now()),
+      id: crypto.randomUUID(),
       email,
       phone,
       pdfName,

@@ -9,7 +9,7 @@ const prisma = new PrismaClient({ adapter });
 export async function logAudit(action: string, detail?: string) {
   try {
     await prisma.auditLog.create({
-      data: { id: String(Date.now()), action, detail: detail || null },
+      data: { id: crypto.randomUUID(), action, detail: detail || null },
     });
   } catch {
     // ignore logging errors

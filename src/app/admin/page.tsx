@@ -1,10 +1,12 @@
 import { readState } from "@/lib/db";
+import { requireAdmin } from "@/lib/auth";
 import { AdminShell } from "@/components/AdminShell";
 import DashboardClient from "./DashboardClient";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminDashboard() {
+  await requireAdmin();
   const state = await readState();
   return (
     <AdminShell active="dashboard">

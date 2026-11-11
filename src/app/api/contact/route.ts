@@ -29,7 +29,7 @@ export async function POST(req: Request) {
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return NextResponse.json({ error: "Email tidak valid." }, { status: 400 });
 
     await prisma.contactMessage.create({
-      data: { id: String(Date.now()), name, email, message },
+      data: { id: crypto.randomUUID(), name, email, message },
     });
     return NextResponse.json({ ok: true });
   } catch {

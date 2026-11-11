@@ -1,5 +1,8 @@
+import { requireAdmin } from "@/lib/auth";
 import { AdminShell } from "@/components/AdminShell";
-export default function SettingsPage() {
+
+export default async function SettingsPage() {
+  await requireAdmin();
   return (
     <AdminShell active="settings">
       <div className="space-y-4">

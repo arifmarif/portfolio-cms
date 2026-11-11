@@ -1,12 +1,15 @@
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+import { SESSION_COOKIE, verifySessionToken } from "./session";
 
 export async function isAdmin(): Promise<boolean> {
   const jar = await cookies();
-  return jar.get("admin_session")?.value === "ok";
+  return verifySessionToken(jar.get(SESSION_COOKIE)?.value);
 }
 
+/** Guards server actions and admin pages; redirects to login when invalid. */
 export async function requireAdmin(): Promise<void> {
   if (!(await isAdmin())) {
-    throw new Error("Unauthorized");
+    redirect("/admin/login");
   }
 }
