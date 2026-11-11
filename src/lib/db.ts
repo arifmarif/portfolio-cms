@@ -1,6 +1,7 @@
 import { PrismaClient, type Prisma } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { Pool } from "pg";
+import { cache } from "react";
 import type { ContentState, SiteSettings, Project, ProjectStatus } from "./types";
 import { seedSettings, seedProjects, seedTemplates } from "./seed";
 
@@ -22,7 +23,8 @@ function toJson(value: SiteSettings): Prisma.InputJsonValue {
   return JSON.parse(JSON.stringify(value)) as Prisma.InputJsonValue;
 }
 
-export async function readState(): Promise<ContentState> {
+// Deduped per request: generateMetadata and page render share one read.
+export const readState = cache(async (): Promise<ContentState> => {
   let config = await prisma.siteConfig.findUnique({ where: { id: "singleton" } });
   if (!config) {
     config = await prisma.siteConfig.create({
@@ -103,7 +105,7 @@ export async function readState(): Promise<ContentState> {
     })),
   };
   return state;
-}
+});
 
 function projectData(p: Project) {
   return {
