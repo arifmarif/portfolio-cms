@@ -1,14 +1,23 @@
 import Link from "next/link";
+import { LayoutDashboard, Folder, Palette, Download, Mail, SlidersHorizontal } from "lucide-react";
+import type { ComponentType } from "react";
 import { logout } from "@/app/admin/actions";
 
+type AdminNavItem = {
+  href: string;
+  label: string;
+  icon: ComponentType<{ className?: string }>;
+  key: string;
+};
+
 export function AdminShell({ children, active }: { children: React.ReactNode; active: string }) {
-  const nav = [
-    { href: "/admin", label: "Dashboard & Profil", icon: "dashboard", key: "dashboard" },
-    { href: "/admin/projects", label: "Manajemen Proyek", icon: "folder_special", key: "projects" },
-    { href: "/admin/themes", label: "Palet & Tema", icon: "palette", key: "themes" },
-    { href: "/admin/downloads", label: "Data Unduhan", icon: "download", key: "downloads" },
-    { href: "/admin/messages", label: "Pesan Kontak", icon: "mail", key: "messages" },
-    { href: "/admin/settings", label: "Pengaturan", icon: "tune", key: "settings" },
+  const nav: AdminNavItem[] = [
+    { href: "/admin", label: "Dashboard & Profil", icon: LayoutDashboard, key: "dashboard" },
+    { href: "/admin/projects", label: "Manajemen Proyek", icon: Folder, key: "projects" },
+    { href: "/admin/themes", label: "Palet & Tema", icon: Palette, key: "themes" },
+    { href: "/admin/downloads", label: "Data Unduhan", icon: Download, key: "downloads" },
+    { href: "/admin/messages", label: "Pesan Kontak", icon: Mail, key: "messages" },
+    { href: "/admin/settings", label: "Pengaturan", icon: SlidersHorizontal, key: "settings" },
   ];
   return (
     <div className="min-h-screen bg-background text-on-surface">
@@ -19,20 +28,23 @@ export function AdminShell({ children, active }: { children: React.ReactNode; ac
             <span className="w-2 h-2 rounded-full bg-secondary" />
           </div>
           <nav className="flex flex-col gap-1 px-2 pt-4">
-            {nav.map((n) => (
-              <Link
-                key={n.key}
-                href={n.href}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all ${
-                  active === n.key
-                    ? "bg-surface-container-high text-primary font-semibold border-l-2 border-primary-container"
-                    : "text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface"
-                }`}
-              >
-                <span className="material-symbols-outlined text-[20px] leading-none shrink-0">{n.icon}</span>
-                <span className="text-sm truncate">{n.label}</span>
-              </Link>
-            ))}
+            {nav.map((n) => {
+              const Icon = n.icon;
+              return (
+                <Link
+                  key={n.key}
+                  href={n.href}
+                  className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all ${
+                    active === n.key
+                      ? "bg-surface-container-high text-primary font-semibold border-l-2 border-primary-container"
+                      : "text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface"
+                  }`}
+                >
+                  <Icon className="size-5 shrink-0" aria-hidden="true" />
+                  <span className="text-sm">{n.label}</span>
+                </Link>
+              );
+            })}
           </nav>
         </div>
         <div className="p-3 space-y-2 bg-surface-container-lowest/80">
