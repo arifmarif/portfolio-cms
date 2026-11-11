@@ -144,3 +144,78 @@ body {
 * { scrollbar-width: none; }
 
 /* (content protection styles applied conditionally via ContentProtection) */
+
+/* ===== Hero animations (Editorial template) ===== */
+@keyframes hero-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-fade-up {
+  animation: hero-fade-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes hero-decor-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0.28;
+  }
+  50% {
+    transform: translate3d(var(--dx, 24px), var(--dy, -18px), 0);
+    opacity: 0.6;
+  }
+}
+
+.hero-decor {
+  position: absolute;
+  font-family: var(--font-mono), monospace;
+  font-size: 13px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--primary);
+  opacity: 0;
+  white-space: nowrap;
+  pointer-events: none;
+  animation: hero-decor-float var(--dur, 18s) ease-in-out var(--delay, 0s) infinite;
+}
+
+@keyframes hero-glow-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.05);
+  }
+}
+
+.hero-glow {
+  position: absolute;
+  top: -25%;
+  left: -12%;
+  width: 75%;
+  height: 150%;
+  background:
+    radial-gradient(closest-side, rgba(226, 111, 76, 0.16), transparent 70%),
+    radial-gradient(closest-side, rgba(68, 226, 205, 0.1), transparent 70%);
+  filter: blur(70px);
+  animation: hero-glow-pulse 16s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-decor,
+  .hero-glow,
+  .hero-fade-up {
+    animation: none;
+  }
+}

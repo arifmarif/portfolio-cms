@@ -32,6 +32,26 @@ const labels = {
   en: { tentang: "About", karya: "Work", pendekatan: "Approach", kontak: "Contact", lihat: "View Selected Work", hubungi: "Contact Directly", prinsip: "Working Principles", proses: "Workflow", siap: "Ready to Build High-Quality Products?", hub: "Reach me via email." },
 };
 
+type HeroDecorItem = {
+  text: string;
+  top: string;
+  left?: string;
+  right?: string;
+  dx: string;
+  dy: string;
+  dur: string;
+  delay: string;
+};
+
+const heroDecor: HeroDecorItem[] = [
+  { text: "UDP", top: "16%", left: "6%", dx: "28px", dy: "-20px", dur: "18s", delay: "0s" },
+  { text: "VLAN", top: "58%", left: "10%", dx: "-22px", dy: "16px", dur: "22s", delay: "-4s" },
+  { text: "SYN", top: "26%", right: "9%", dx: "18px", dy: "-26px", dur: "16s", delay: "-8s" },
+  { text: "FIREWALL", top: "64%", right: "14%", dx: "-26px", dy: "-12px", dur: "20s", delay: "-2s" },
+  { text: "TCP", top: "10%", right: "26%", dx: "30px", dy: "20px", dur: "24s", delay: "-6s" },
+  { text: "LAN", top: "74%", left: "34%", dx: "-18px", dy: "-14px", dur: "17s", delay: "-10s" },
+];
+
 export function EditorialTemplate({ settings, projects }: { settings: SiteSettings; projects: Project[] }) {
   const [locale, switchLocale] = useLocale();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -104,12 +124,34 @@ export function EditorialTemplate({ settings, projects }: { settings: SiteSettin
 
       <main>
         <section className="relative overflow-hidden pb-16">
+          <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
+            {heroDecor.map((d) => (
+              <span
+                key={d.text}
+                className="hero-decor"
+                style={
+                  {
+                    top: d.top,
+                    ...(d.left ? { left: d.left } : {}),
+                    ...(d.right ? { right: d.right } : {}),
+                    "--dx": d.dx,
+                    "--dy": d.dy,
+                    "--dur": d.dur,
+                    "--delay": d.delay,
+                  } as React.CSSProperties
+                }
+              >
+                {d.text}
+              </span>
+            ))}
+            <div className="hero-glow" />
+          </div>
           <div className="max-w-[1320px] mx-auto px-4 md:px-8 pt-10 lg:pt-16 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-7 space-y-6">
-              <span className="font-mono text-sm text-primary tracking-wide">01 — {tx.tagline.toUpperCase()}</span>
-              <h1 className="font-display text-4xl md:text-6xl font-bold leading-tight">{tx.heroTitle}</h1>
-              <p className="text-lg text-on-surface-variant max-w-2xl">{tx.heroSubtitle}</p>
-              <div className="flex flex-wrap gap-3 pt-2">
+              <span className="font-mono text-sm text-primary tracking-wide hero-fade-up" style={{ animationDelay: "80ms" }}>01 — {tx.tagline.toUpperCase()}</span>
+              <h1 className="font-display text-4xl md:text-6xl font-bold leading-tight hero-fade-up" style={{ animationDelay: "180ms" }}>{tx.heroTitle}</h1>
+              <p className="text-lg text-on-surface-variant max-w-2xl hero-fade-up" style={{ animationDelay: "320ms" }}>{tx.heroSubtitle}</p>
+              <div className="flex flex-wrap gap-3 pt-2 hero-fade-up" style={{ animationDelay: "460ms" }}>
                 <a href="#karya" className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-primary text-on-primary font-medium hover:bg-primary-fixed-dim transition-colors">
                   {L.lihat}
                   <ArrowUpRight aria-hidden="true" />
@@ -119,13 +161,13 @@ export function EditorialTemplate({ settings, projects }: { settings: SiteSettin
                 </a>
                 <DownloadGate label={locale === "en" ? "Download PDF" : "Unduh PDF"} />
               </div>
-              <div className="pt-4 flex flex-wrap gap-4 text-outline font-mono text-xs">
+              <div className="pt-4 flex flex-wrap gap-4 text-outline font-mono text-xs hero-fade-up" style={{ animationDelay: "580ms" }}>
                 <span>{settings.experienceYears}+ {locale === "en" ? "years experience" : "tahun pengalaman"}</span>
                 <span>{settings.projectsCount} {locale === "en" ? "projects" : "proyek"}</span>
                 <span>{settings.location}</span>
               </div>
             </div>
-            <div className="lg:col-span-5">
+            <div className="lg:col-span-5 hero-fade-up" style={{ animationDelay: "380ms" }}>
               <div className="relative max-w-[420px] mx-auto">
                 <div className="absolute -inset-2 rounded-2xl bg-gradient-to-tr from-primary-container/30 via-surface-container-high to-secondary-container/20 blur-sm -rotate-1" />
                 <div className="relative rounded-2xl bg-surface-container-low overflow-hidden shadow-xl aspect-square">
