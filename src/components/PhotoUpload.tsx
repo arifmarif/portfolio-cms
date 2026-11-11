@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import Image from "next/image";
 
 export default function PhotoUpload({ value, onChange }: { value: string; onChange: (v: string) => void }) {
   const [uploading, setUploading] = useState(false);
@@ -23,7 +24,7 @@ export default function PhotoUpload({ value, onChange }: { value: string; onChan
     <div className="space-y-2">
       <label className="block text-sm text-on-surface-variant">Foto Profil</label>
       <div className="flex items-center gap-3">
-        {value && <img src={value} alt="foto" className="w-16 h-16 rounded-full object-cover ring-1 ring-outline-variant" />}
+        {value && <Image src={value} alt="foto" width={64} height={64} unoptimized className="w-16 h-16 rounded-full object-cover ring-1 ring-outline-variant" />}
         <input type="file" accept="image/*" onChange={handleFile} disabled={uploading} className="text-sm" />
         {uploading && <span className="text-xs text-outline">Mengunggah...</span>}
       </div>

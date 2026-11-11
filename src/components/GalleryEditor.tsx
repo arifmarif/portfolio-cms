@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import Image from "next/image";
 
 type Img = { url: string; alt: string };
 
@@ -52,8 +53,8 @@ export default function GalleryEditor({ defaultValue }: { defaultValue: Img[] })
       <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
         {images.map((img, idx) => (
           <div key={idx} className="rounded-lg bg-surface-container-lowest p-2 space-y-2 border border-outline-variant/30">
-            <div className="relative">
-              <img src={img.url} alt={img.alt} className="w-full aspect-square object-cover rounded" />
+            <div className="relative aspect-square">
+              <Image src={img.url} alt={img.alt} fill unoptimized className="object-cover rounded" />
               <span className="absolute top-1 left-1 text-xs bg-black/60 text-white px-1.5 rounded">{idx + 1}</span>
             </div>
             <input

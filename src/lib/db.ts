@@ -1,15 +1,25 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, type Prisma } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { Pool } from "pg";
-import type { ContentState, SiteSettings, Project, DownloadSubmission } from "./types";
+import type { ContentState, SiteSettings, Project, ProjectStatus } from "./types";
 import { seedSettings, seedProjects, seedTemplates } from "./seed";
 
 const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
 
-function toSettings(json: any): SiteSettings {
-  return json as SiteSettings;
+function toSettings(json: Prisma.JsonValue): SiteSettings {
+  // Stored value was written by toJson() from a SiteSettings object; shape is trusted.
+  return json as unknown as SiteSettings;
+}
+
+function toGallery(json: Prisma.JsonValue): Project["gallery"] {
+  return Array.isArray(json) ? (json as Project["gallery"]) : [];
+}
+
+function toJson(value: SiteSettings): Prisma.InputJsonValue {
+  // Round-trip guarantees plain JSON (no Dates/classes) for Prisma Json columns.
+  return JSON.parse(JSON.stringify(value)) as Prisma.InputJsonValue;
 }
 
 export async function readState(): Promise<ContentState> {
@@ -62,10 +72,10 @@ export async function readState(): Promise<ContentState> {
       tags: p.tags,
       client: p.client || undefined,
       year: p.year || undefined,
-      status: p.status as any,
+      status: p.status as ProjectStatus,
       order: p.order,
       featured: p.featured,
-      gallery: (p.gallery as any) || [],
+      gallery: toGallery(p.gallery),
     })),
     templates: seedTemplates,
     downloads: downloads.map((d) => ({
@@ -82,8 +92,8 @@ export async function readState(): Promise<ContentState> {
 export async function writeState(state: ContentState): Promise<void> {
   await prisma.siteConfig.upsert({
     where: { id: "singleton" },
-    update: { published: state.settings as any, draft: state.draftSettings as any },
-    create: { id: "singleton", published: state.settings as any, draft: state.draftSettings as any },
+    update: { published: toJson(state.settings), draft: toJson(state.draftSettings) },
+    create: { id: "singleton", published: toJson(state.settings), draft: toJson(state.draftSettings) },
   });
 
   // Sync projects: delete missing, upsert all

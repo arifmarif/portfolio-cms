@@ -1,6 +1,5 @@
 import { readState } from "@/lib/db";
 import { AdminShell } from "@/components/AdminShell";
-import { updateProject } from "../../actions";
 import GalleryEditor from "@/components/GalleryEditor";
 
 export const dynamic = "force-dynamic";

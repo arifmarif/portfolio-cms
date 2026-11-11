@@ -1,11 +1,46 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useSyncExternalStore, useState } from "react";
 import { Menu, X, ArrowUpRight, Mail, MessageCircle, ExternalLink } from "lucide-react";
 import Image from "next/image";
 import type { Project, SiteSettings } from "@/lib/types";
 import ImageGallery from "@/components/ImageGallery";
 import DownloadGate from "@/components/DownloadGate";
 import ContactForm from "@/components/ContactForm";
+
+type Locale = "id" | "en";
+
+const localeStore = {
+  listeners: new Set<() => void>(),
+  subscribe(listener: () => void) {
+    localeStore.listeners.add(listener);
+    return () => {
+      localeStore.listeners.delete(listener);
+    };
+  },
+  getSnapshot(): Locale {
+    try {
+      return localStorage.getItem("locale") === "en" ? "en" : "id";
+    } catch {
+      return "id";
+    }
+  },
+  getServerSnapshot(): Locale {
+    return "id";
+  },
+  set(locale: Locale) {
+    try {
+      localStorage.setItem("locale", locale);
+    } catch {
+      // Ignore unavailable storage (private mode); locale still applies in-memory.
+    }
+    for (const listener of localeStore.listeners) listener();
+  },
+};
+
+function useLocale(): [Locale, (locale: Locale) => void] {
+  const locale = useSyncExternalStore(localeStore.subscribe, localeStore.getSnapshot, localeStore.getServerSnapshot);
+  return [locale, localeStore.set];
+}
 
 function t(settings: SiteSettings, locale: "id" | "en") {
   return {
@@ -32,18 +67,8 @@ const labels = {
 };
 
 export function EditorialTemplate({ settings, projects }: { settings: SiteSettings; projects: Project[] }) {
-  const [locale, setLocale] = useState<"id" | "en">("id");
+  const [locale, switchLocale] = useLocale();
   const [menuOpen, setMenuOpen] = useState(false);
-
-  useEffect(() => {
-    const saved = localStorage.getItem("locale");
-    if (saved === "en" || saved === "id") setLocale(saved);
-  }, []);
-
-  function switchLocale(l: "id" | "en") {
-    setLocale(l);
-    localStorage.setItem("locale", l);
-  }
 
   const tx = t(settings, locale);
   const L = labels[locale];

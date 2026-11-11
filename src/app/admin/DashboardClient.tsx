@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import Image from "next/image";
 import { updateDraftSettings, publishSettings } from "./actions";
 import PhotoUpload from "@/components/PhotoUpload";
 import type { SiteSettings } from "@/lib/types";
@@ -58,10 +59,10 @@ export default function DashboardClient({
     <div className="space-y-6">
       {/* Summary cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card title="Koleksi Portofolio" value={String(projectCount)} sub="Karya aktif" />
+        <Card title="Koleksi Portofolio" value={String(projectCount)} sub="Total karya" />
+        <Card title="Karya Diterbitkan" value={String(publishedCount)} sub="Terlihat publik" />
+        <Card title="Karya Draf" value={String(draftCount)} sub="Belum diterbitkan" />
         <Card title="Ketersediaan Kerja" value={draft.availability ? "Tersedia" : "Tidak tersedia"} sub="Status saat ini" />
-        <Card title="Trafik 30 Hari" value="—" sub="Data belum tersedia" />
-        <Card title="CMS Core & Infra" value="v2.4" sub="Tersinkron" />
       </div>
 
       <div className="grid grid-cols-1 xl:grid-cols-[1fr_360px] gap-6">
@@ -153,6 +154,10 @@ export default function DashboardClient({
             )}
           </div>
           <p className="text-xs text-outline">Terakhir disimpan: {new Date(draft.draftUpdatedAt).toLocaleString("id-ID")}</p>
+          <p className="text-xs text-outline">
+            Versi publik saat ini:{" "}
+            {published.publishedAt ? new Date(published.publishedAt).toLocaleString("id-ID") : "belum pernah diterbitkan"}
+          </p>
         </div>
 
         {/* Right panel */}
@@ -170,7 +175,7 @@ export default function DashboardClient({
           <section className="rounded-xl bg-surface-container-low p-4 space-y-3">
             <h2 className="font-display text-lg font-semibold">Preview Profil</h2>
             <div className="rounded-xl bg-surface-container-lowest p-4 space-y-2 border border-outline-variant/30">
-              {draft.photoUrl && <img src={draft.photoUrl} alt={draft.brandName} className="w-16 h-16 rounded-full object-cover" />}
+              {draft.photoUrl && <Image src={draft.photoUrl} alt={draft.brandName} width={64} height={64} unoptimized className="w-16 h-16 rounded-full object-cover" />}
               <p className="font-display font-bold text-lg">{draft.brandName}</p>
               <p className="text-sm text-primary">{draft.tagline}</p>
               <p className="text-sm text-on-surface-variant">{draft.heroTitle}</p>
