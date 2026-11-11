@@ -1,0 +1,232 @@
+/* Dedicated A4 document styles for /print. Scoped under .print-doc. */
+
+.print-doc {
+  --pd-ink: #1c1e21;
+  --pd-ink-soft: #44484f;
+  --pd-ink-faint: #6b7078;
+  --pd-line: #d8d5d2;
+  --pd-accent: #9c3b1d;
+  --pd-paper: #ffffff;
+
+  background: var(--pd-paper);
+  color: var(--pd-ink);
+  font-family: var(--font-inter), system-ui, sans-serif;
+  font-size: 10.5pt;
+  line-height: 1.55;
+  position: relative;
+}
+
+/* Light paper even though the site root is dark. */
+body.print-doc-body {
+  background: var(--pd-paper) !important;
+  color: var(--pd-ink);
+  color-scheme: light;
+}
+
+@page {
+  size: A4;
+  margin: 14mm 16mm 16mm;
+}
+
+/* Screen preview: show the document centered on a neutral backdrop. */
+@media screen {
+  body.print-doc-body {
+    background: #f3f1ef !important;
+  }
+  .print-doc {
+    margin: 2rem auto;
+    width: 210mm;
+    min-height: 297mm;
+    padding: 14mm 16mm 16mm;
+    box-shadow: 0 10px 40px rgb(0 0 0 / 0.18);
+    border-radius: 2px;
+  }
+}
+
+@media print {
+  body.print-doc-body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .print-doc {
+    width: auto;
+    min-height: 0;
+    padding: 0;
+    box-shadow: none;
+  }
+  .print-header,
+  .print-block,
+  .print-project,
+  .print-footer {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  .print-doc h2,
+  .print-doc h3 {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+}
+
+.print-watermark {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  transform: rotate(-24deg);
+  font-family: var(--font-jakarta), var(--font-inter), sans-serif;
+  font-size: 54pt;
+  font-weight: 700;
+  white-space: nowrap;
+  color: var(--pd-ink);
+  opacity: 0.045;
+}
+
+.print-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8mm;
+  border-bottom: 0.8mm solid var(--pd-ink);
+  padding-bottom: 4mm;
+  position: relative;
+}
+
+.print-header h1 {
+  font-family: var(--font-jakarta), var(--font-inter), sans-serif;
+  font-size: 26pt;
+  font-weight: 700;
+  line-height: 1.1;
+  margin: 0;
+}
+
+.print-tagline {
+  color: var(--pd-accent);
+  font-weight: 600;
+  font-size: 12pt;
+  margin: 1.5mm 0 0;
+}
+
+.print-photo {
+  width: 28mm;
+  height: 28mm;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.print-contact {
+  font-size: 9pt;
+  color: var(--pd-ink-soft);
+  margin: 3mm 0 0;
+}
+
+.print-block {
+  margin-top: 7mm;
+}
+
+.print-block h2 {
+  font-family: var(--font-jakarta), var(--font-inter), sans-serif;
+  font-size: 13pt;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--pd-ink);
+  border-bottom: 0.3mm solid var(--pd-line);
+  padding-bottom: 1mm;
+  margin: 0 0 2.5mm;
+}
+
+.print-summary {
+  margin: 0;
+  text-align: justify;
+  color: var(--pd-ink-soft);
+}
+
+.print-tags {
+  margin: 0;
+  color: var(--pd-ink-soft);
+}
+
+.print-tag {
+  display: inline-block;
+  border: 0.25mm solid var(--pd-line);
+  border-radius: 99px;
+  padding: 0.4mm 2.4mm;
+  margin: 0 1.2mm 1.2mm 0;
+  font-size: 8.5pt;
+  color: var(--pd-ink-soft);
+  background: #f6f4f2;
+}
+
+.print-project {
+  display: flex;
+  gap: 5mm;
+  padding: 3.5mm 0;
+  border-bottom: 0.25mm solid var(--pd-line);
+}
+
+.print-project:last-child {
+  border-bottom: none;
+}
+
+.print-project-img {
+  width: 36mm;
+  height: 27mm;
+  object-fit: cover;
+  border-radius: 1.5mm;
+  flex-shrink: 0;
+}
+
+.print-project-body {
+  min-width: 0;
+}
+
+.print-project-title {
+  font-family: var(--font-jakarta), var(--font-inter), sans-serif;
+  font-size: 11.5pt;
+  font-weight: 600;
+  margin: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 2mm;
+}
+
+.print-project-featured {
+  color: var(--pd-accent);
+  font-size: 8pt;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.print-project-meta {
+  font-size: 9pt;
+  color: var(--pd-ink-faint);
+  margin: 0.6mm 0 1.4mm;
+}
+
+.print-project-desc {
+  margin: 0;
+  color: var(--pd-ink-soft);
+}
+
+.print-project-tags {
+  margin: 1.4mm 0 0;
+  font-size: 8.5pt;
+  color: var(--pd-ink-faint);
+}
+
+.print-footer {
+  margin-top: 8mm;
+  border-top: 0.3mm solid var(--pd-line);
+  padding-top: 2.5mm;
+  font-size: 9pt;
+  color: var(--pd-ink-faint);
+  display: flex;
+  justify-content: space-between;
+  gap: 4mm;
+}
