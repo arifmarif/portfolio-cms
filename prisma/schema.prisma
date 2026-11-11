@@ -14,23 +14,31 @@ model SiteConfig {
 }
 
 model Project {
-  id           String   @id
-  slug         String   @unique
-  title        String
-  category     String
-  excerpt      String
-  description  String
-  thumbnailUrl String
-  altText      String
-  tags         String[]
-  client       String?
-  year         String?
-  status       String
-  order        Int
-  featured     Boolean  @default(false)
-  gallery      Json
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id            String    @id
+  slug          String    @unique
+  title         String
+  titleEn       String?
+  category      String
+  categoryEn    String?
+  excerpt       String
+  excerptEn     String?
+  description   String
+  descriptionEn String?
+  thumbnailUrl  String
+  altText       String
+  altTextEn     String?
+  tags          String[]
+  tagsEn        String[]  @default([])
+  client        String?
+  year          String?
+  status        String
+  order         Int
+  featured      Boolean   @default(false)
+  gallery       Json
+  idUpdatedAt   DateTime?
+  enUpdatedAt   DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 }
 
 model DownloadSubmission {

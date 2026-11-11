@@ -146,7 +146,7 @@ export async function updateProject(id: string, formData: FormData) {
   p.status = (formData.get("status") as "DRAFT" | "PUBLISHED" | "ARCHIVED") || p.status;
   p.featured = formData.get("featured") === "on";
   const g = parseGallery(formData.get("gallery"));
-  p.gallery = g.length ? g : p.gallery;
+  p.gallery = g;
   if (idChanged) p.idUpdatedAt = new Date().toISOString();
   if (enChanged) p.enUpdatedAt = new Date().toISOString();
   if (!p.idUpdatedAt) p.idUpdatedAt = new Date().toISOString();
@@ -167,14 +167,18 @@ export async function deleteProject(id: string) {
   revalidatePath("/");
 }
 
-function parseGallery(raw: FormDataEntryValue | null): { url: string; alt: string }[] {
+function parseGallery(raw: FormDataEntryValue | null): { url: string; alt: string; altEn?: string }[] {
   if (!raw) return [];
   try {
     const arr = JSON.parse(String(raw));
     if (!Array.isArray(arr)) return [];
     return arr
       .filter((x) => x && typeof x.url === "string")
-      .map((x) => ({ url: String(x.url), alt: String(x.alt || "") }));
+      .map((x) => ({
+        url: String(x.url),
+        alt: String(x.alt || ""),
+        altEn: x.altEn ? String(x.altEn) : undefined,
+      }));
   } catch {
     return [];
   }

@@ -2,7 +2,7 @@
 import { useState } from "react";
 import Image from "next/image";
 
-type Img = { url: string; alt: string };
+type Img = { url: string; alt: string; altEn?: string };
 
 export default function GalleryEditor({ defaultValue }: { defaultValue: Img[] }) {
   const [images, setImages] = useState<Img[]>(defaultValue || []);
@@ -40,8 +40,8 @@ export default function GalleryEditor({ defaultValue }: { defaultValue: Img[] })
     sync(next);
   }
 
-  function updateAlt(idx: number, alt: string) {
-    const next = images.map((img, i) => (i === idx ? { ...img, alt } : img));
+  function updateAlt(idx: number, key: "alt" | "altEn", value: string) {
+    const next = images.map((img, i) => (i === idx ? { ...img, [key]: value } : img));
     sync(next);
   }
 
@@ -60,8 +60,15 @@ export default function GalleryEditor({ defaultValue }: { defaultValue: Img[] })
             <input
               type="text"
               value={img.alt}
-              onChange={(e) => updateAlt(idx, e.target.value)}
-              placeholder="Teks alternatif"
+              onChange={(e) => updateAlt(idx, "alt", e.target.value)}
+              placeholder="Teks alternatif (ID)"
+              className="w-full rounded bg-surface-container-low px-2 py-1 text-xs text-on-surface ring-1 ring-outline-variant focus:ring-primary"
+            />
+            <input
+              type="text"
+              value={img.altEn || ""}
+              onChange={(e) => updateAlt(idx, "altEn", e.target.value)}
+              placeholder="Teks alternatif (EN)"
               className="w-full rounded bg-surface-container-low px-2 py-1 text-xs text-on-surface ring-1 ring-outline-variant focus:ring-primary"
             />
             <div className="flex gap-1">
