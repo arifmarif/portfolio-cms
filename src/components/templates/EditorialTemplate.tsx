@@ -223,7 +223,20 @@ export function EditorialTemplate({ settings, projects }: { settings: SiteSettin
             <a href={`mailto:${settings.email}`} className="inline-block px-6 py-3 rounded-lg bg-primary-container text-on-primary-container font-medium hover:bg-primary">
               {settings.email}
             </a>
-            {settings.phone && <p className="text-on-surface-variant text-sm">{settings.phone}</p>}
+            {settings.whatsapp && (() => {
+              const normalized = settings.whatsapp.replace(/\D/g, "");
+              if (!normalized) return null;
+              return (
+                <a
+                  href={`https://wa.me/${normalized}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block px-6 py-3 rounded-lg bg-primary-container text-on-primary-container font-medium hover:bg-primary"
+                >
+                  {settings.whatsapp}
+                </a>
+              );
+            })()}
             <div className="flex justify-center gap-4 pt-2 text-sm text-on-surface-variant">
               <a href={settings.linkedin} className="hover:text-primary">LinkedIn</a>
               <a href={settings.portfolioUrl} className="hover:text-primary">{locale === "en" ? "Portfolio" : "Portofolio"}</a>
