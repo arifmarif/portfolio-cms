@@ -146,7 +146,7 @@ export function EditorialTemplate({ settings, projects }: { settings: SiteSettin
             ))}
             <div className="hero-glow" />
           </div>
-          <div className="max-w-[1320px] mx-auto px-4 md:px-8 pt-10 lg:pt-16 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          <div className="relative z-10 max-w-[1320px] mx-auto px-4 md:px-8 pt-10 lg:pt-16 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-7 space-y-6">
               <span className="font-mono text-sm text-primary tracking-wide hero-fade-up" style={{ animationDelay: "80ms" }}>01 — {tx.tagline.toUpperCase()}</span>
               <h1 className="font-display text-4xl md:text-6xl font-bold leading-tight hero-fade-up" style={{ animationDelay: "180ms" }}>{tx.heroTitle}</h1>

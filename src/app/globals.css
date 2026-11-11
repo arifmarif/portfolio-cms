@@ -162,14 +162,17 @@ body {
 }
 
 @keyframes hero-decor-float {
-  0%,
-  100% {
+  0% {
     transform: translate3d(0, 0, 0);
-    opacity: 0.28;
+    opacity: 0.22;
   }
   50% {
     transform: translate3d(var(--dx, 24px), var(--dy, -18px), 0);
     opacity: 0.6;
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0.22;
   }
 }
 
@@ -180,10 +183,10 @@ body {
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--primary);
-  opacity: 0;
+  opacity: 0.3;
   white-space: nowrap;
   pointer-events: none;
-  animation: hero-decor-float var(--dur, 18s) ease-in-out var(--delay, 0s) infinite;
+  animation: hero-decor-float var(--dur, 18s) ease-in-out var(--delay, 0s) infinite both;
 }
 
 @keyframes hero-glow-pulse {
@@ -217,5 +220,8 @@ body {
   .hero-glow,
   .hero-fade-up {
     animation: none;
+  }
+  .hero-decor {
+    opacity: 0.3;
   }
 }
