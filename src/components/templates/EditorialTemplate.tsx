@@ -44,12 +44,12 @@ type HeroDecorItem = {
 };
 
 const heroDecor: HeroDecorItem[] = [
-  { text: "UDP", top: "16%", left: "6%", dx: "28px", dy: "-20px", dur: "18s", delay: "0s" },
-  { text: "VLAN", top: "58%", left: "10%", dx: "-22px", dy: "16px", dur: "22s", delay: "-4s" },
-  { text: "SYN", top: "26%", left: "40%", dx: "18px", dy: "-26px", dur: "16s", delay: "-8s" },
-  { text: "FIREWALL", top: "64%", left: "28%", dx: "-26px", dy: "-12px", dur: "20s", delay: "-2s" },
-  { text: "TCP", top: "10%", left: "36%", dx: "30px", dy: "20px", dur: "24s", delay: "-6s" },
-  { text: "LAN", top: "74%", left: "34%", dx: "-18px", dy: "-14px", dur: "17s", delay: "-10s" },
+  { text: "UDP", top: "16%", left: "6%", dx: "44px", dy: "-30px", dur: "16s", delay: "0s" },
+  { text: "VLAN", top: "58%", left: "10%", dx: "-34px", dy: "26px", dur: "18s", delay: "-4s" },
+  { text: "SYN", top: "26%", left: "40%", dx: "30px", dy: "-38px", dur: "14s", delay: "-8s" },
+  { text: "FIREWALL", top: "64%", left: "28%", dx: "-40px", dy: "-22px", dur: "16s", delay: "-2s" },
+  { text: "TCP", top: "10%", left: "36%", dx: "46px", dy: "32px", dur: "12s", delay: "-6s" },
+  { text: "LAN", top: "74%", left: "34%", dx: "-30px", dy: "-24px", dur: "14s", delay: "-10s" },
 ];
 
 export function EditorialTemplate({ settings, projects }: { settings: SiteSettings; projects: Project[] }) {
