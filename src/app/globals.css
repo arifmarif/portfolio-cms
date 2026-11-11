@@ -161,6 +161,32 @@ body {
   animation: hero-fade-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
+.hero-typed {
+  font-family: var(--font-mono), monospace;
+  font-size: 13px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--primary);
+  min-height: 1.5em;
+  margin-top: 8px;
+}
+
+.hero-typed-cursor {
+  display: inline-block;
+  width: 8px;
+  height: 1em;
+  margin-left: 3px;
+  background: var(--primary);
+  vertical-align: text-bottom;
+  animation: hero-typed-blink 1s steps(1) infinite;
+}
+
+@keyframes hero-typed-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
 @keyframes hero-decor-float {
   0% {
     transform: translate3d(0, 0, 0);
@@ -223,5 +249,9 @@ body {
   }
   .hero-decor {
     opacity: 0.3;
+  }
+  .hero-typed-cursor {
+    animation: none;
+    opacity: 0.7;
   }
 }

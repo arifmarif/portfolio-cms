@@ -47,6 +47,10 @@ export async function updateDraftSettings(formData: FormData) {
   draft.taglineEn = newTaglineEn;
   draft.heroTitleEn = newHeroTitleEn;
   draft.heroSubtitleEn = newHeroSubtitleEn;
+  const rawHeroRoles = String(formData.get("heroRoleTexts") || "");
+  const rawHeroRolesEn = String(formData.get("heroRoleTextsEn") || "");
+  draft.heroRoleTexts = rawHeroRoles ? rawHeroRoles.split(",").map((s) => s.trim()).filter(Boolean) : draft.heroRoleTexts ?? [];
+  draft.heroRoleTextsEn = rawHeroRolesEn ? rawHeroRolesEn.split(",").map((s) => s.trim()).filter(Boolean) : draft.heroRoleTextsEn ?? [];
   if (idChanged) draft.idUpdatedAt = new Date().toISOString();
   if (enChanged) draft.enUpdatedAt = new Date().toISOString();
   if (!draft.idUpdatedAt) draft.idUpdatedAt = draft.draftUpdatedAt;

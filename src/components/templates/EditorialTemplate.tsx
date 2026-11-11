@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Menu, X, ArrowUpRight, Mail, MessageCircle, ExternalLink } from "lucide-react";
 import Image from "next/image";
 import type { Project, SiteSettings } from "@/lib/types";
@@ -59,6 +59,93 @@ export function EditorialTemplate({ settings, projects }: { settings: SiteSettin
   const tx = t(settings, locale);
   const L = labels[locale];
   const published = projects.filter((p) => p.status === "PUBLISHED");
+
+  const typedPhrases = useMemo(() => {
+    const source = locale === "en" ? settings.heroRoleTextsEn ?? [] : settings.heroRoleTexts ?? [];
+    const fallback = locale === "en" ? settings.taglineEn || settings.tagline : settings.tagline;
+    const list: string[] = [];
+    const seen = new Set<string>();
+    for (const raw of [...source, fallback]) {
+      const text = String(raw ?? "").trim();
+      if (!text) continue;
+      const key = text.toLowerCase();
+      if (seen.has(key)) continue;
+      seen.add(key);
+      list.push(text);
+    }
+    return list;
+  }, [locale, settings.tagline, settings.taglineEn, settings.heroRoleTexts, settings.heroRoleTextsEn]);
+
+  const [typedText, setTypedText] = useState(() => typedPhrases[0] ?? "");
+
+  const typedRef = useRef<HTMLSpanElement>(null);
+
+  const [reducedMotion, setReducedMotion] = useState(false);
+  useEffect(() => {
+    const mq = typeof window !== "undefined" ? window.matchMedia?.("(prefers-reduced-motion: reduce)") : undefined;
+    const update = () => setReducedMotion(!!(mq && mq.matches));
+    update();
+    if (mq && typeof mq.addEventListener === "function") {
+      mq.addEventListener("change", update);
+      return () => mq.removeEventListener("change", update);
+    }
+    if (mq && typeof mq.addListener === "function") {
+      mq.addListener(update);
+      return () => mq.removeListener(update);
+    }
+    return undefined;
+  }, []);
+
+  useEffect(() => {
+    const el = typedRef.current;
+    const phrases = typedPhrases;
+    if (!el || phrases.length === 0) return;
+
+    if (reducedMotion) {
+      // Static, always-visible text when movement is reduced.
+      const id = setTimeout(() => setTypedText(phrases[0]), 0);
+      return () => clearTimeout(id);
+    }
+
+    let pi = 0;
+    let ci = 0;
+    let deleting = false;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    let alive = true;
+
+    const tick = () => {
+      if (!alive) return;
+      const current = phrases[pi] ?? "";
+      if (!deleting) {
+        ci += 1;
+        const next = current.slice(0, ci);
+        setTypedText(next);
+        if (ci >= current.length) {
+          deleting = true;
+          timer = setTimeout(tick, 1800);
+          return;
+        }
+        timer = setTimeout(tick, 65);
+      } else {
+        ci -= 1;
+        const next = current.slice(0, ci);
+        setTypedText(next);
+        if (ci <= 0) {
+          deleting = false;
+          pi = (pi + 1) % phrases.length;
+          timer = setTimeout(tick, 350);
+          return;
+        }
+        timer = setTimeout(tick, 35);
+      }
+    };
+
+    timer = setTimeout(tick, 500);
+    return () => {
+      alive = false;
+      if (timer) clearTimeout(timer);
+    };
+  }, [typedPhrases, reducedMotion]);
 
   return (
     <div className="min-h-screen bg-background text-on-surface">
@@ -150,6 +237,12 @@ export function EditorialTemplate({ settings, projects }: { settings: SiteSettin
             <div className="lg:col-span-7 space-y-6">
               <span className="font-mono text-sm text-primary tracking-wide hero-fade-up" style={{ animationDelay: "80ms" }}>01 — {tx.tagline.toUpperCase()}</span>
               <h1 className="font-display text-4xl md:text-6xl font-bold leading-tight hero-fade-up" style={{ animationDelay: "180ms" }}>{tx.heroTitle}</h1>
+              <div className="hero-fade-up" style={{ animationDelay: "300ms" }}>
+                <p className="hero-typed">
+                  <span>{typedText}</span>
+                  <span className="hero-typed-cursor" aria-hidden="true" />
+                </p>
+              </div>
               <p className="text-lg text-on-surface-variant max-w-2xl hero-fade-up" style={{ animationDelay: "320ms" }}>{tx.heroSubtitle}</p>
               <div className="flex flex-wrap gap-3 pt-2 hero-fade-up" style={{ animationDelay: "460ms" }}>
                 <a href="#karya" className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-primary text-on-primary font-medium hover:bg-primary-fixed-dim transition-colors">

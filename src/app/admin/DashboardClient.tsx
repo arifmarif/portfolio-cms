@@ -110,6 +110,26 @@ export default function DashboardClient({
                   className="w-full rounded-lg bg-surface-container-lowest px-3 py-2 text-on-surface ring-1 ring-outline-variant focus:ring-primary"
                 />
               </div>
+              <div className="md:col-span-2">
+                <label className="block text-sm text-on-surface-variant mb-1">Daftar Teks Rotasi Hero (ID)</label>
+                <input
+                  value={(draft.heroRoleTexts ?? []).join(", ")}
+                  onChange={(e) => update("heroRoleTexts", e.target.value.split(",").map((v) => v.trim()).filter(Boolean))}
+                  placeholder="IT Support & Jaringan, Network Engineer"
+                  className="w-full rounded-lg bg-surface-container-lowest px-3 py-2 text-on-surface ring-1 ring-outline-variant focus:ring-primary"
+                />
+                <p className="text-xs text-outline mt-1">Teks singkat yang diketik pada baris hero. Pisahkan beberapa teks dengan koma. Jika kosong, fallback ke gelar profesi.</p>
+              </div>
+              <div className="md:col-span-2">
+                <label className="block text-sm text-on-surface-variant mb-1">Hero Role Texts (EN)</label>
+                <input
+                  value={(draft.heroRoleTextsEn ?? []).join(", ")}
+                  onChange={(e) => update("heroRoleTextsEn", e.target.value.split(",").map((v) => v.trim()).filter(Boolean))}
+                  placeholder="Network Engineer & IT Support"
+                  className="w-full rounded-lg bg-surface-container-lowest px-3 py-2 text-on-surface ring-1 ring-outline-variant focus:ring-primary"
+                />
+                <p className="text-xs text-outline mt-1">Short hero typewriter texts (EN). Comma-separated. Falls back to tagline when empty.</p>
+              </div>
               <div>
                 <label className="block text-sm text-on-surface-variant mb-1">Bahasa</label>
                 <select className="w-full rounded-lg bg-surface-container-lowest px-3 py-2 text-on-surface ring-1 ring-outline-variant">

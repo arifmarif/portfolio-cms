@@ -34,6 +34,8 @@ export interface SiteSettings {
   heroTitleEn?: string;
   heroSubtitle: string;
   heroSubtitleEn?: string;
+  heroRoleTexts?: string[];
+  heroRoleTextsEn?: string[];
   location: string;
   experienceYears: number;
   projectsCount: number;
