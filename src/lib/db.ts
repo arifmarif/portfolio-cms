@@ -2,7 +2,7 @@ import { PrismaClient, type Prisma } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { Pool } from "pg";
 import { cache } from "react";
-import type { ContentState, SiteSettings, Project, ProjectStatus } from "./types";
+import type { ContentState, SiteSettings, Project, ProjectStatus, ContactMessageItem } from "./types";
 import { seedSettings, seedProjects, seedTemplates } from "./seed";
 
 const pool = new Pool({ connectionString: process.env.DATABASE_URL });
@@ -132,6 +132,17 @@ function projectData(p: Project) {
     idUpdatedAt: p.idUpdatedAt ? new Date(p.idUpdatedAt) : null,
     enUpdatedAt: p.enUpdatedAt ? new Date(p.enUpdatedAt) : null,
   };
+}
+
+export async function readContactMessages(): Promise<ContactMessageItem[]> {
+  const messages = await prisma.contactMessage.findMany({ orderBy: { createdAt: "desc" } });
+  return messages.map((m) => ({
+    id: m.id,
+    name: m.name,
+    email: m.email,
+    message: m.message,
+    createdAt: m.createdAt.toISOString(),
+  }));
 }
 
 export async function writeState(state: ContentState): Promise<void> {

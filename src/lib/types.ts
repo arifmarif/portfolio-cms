@@ -69,6 +69,21 @@ export interface DownloadSubmission {
   createdAt: string;
 }
 
+export interface ContactMessageItem {
+  id: string;
+  name: string;
+  email: string;
+  message: string;
+  createdAt: string;
+}
+
+export interface AuditLogEntry {
+  id: string;
+  action: string;
+  detail?: string;
+  createdAt: string;
+}
+
 export interface ContentState {
   settings: SiteSettings;
   draftSettings: SiteSettings;

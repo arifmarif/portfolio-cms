@@ -1,48 +1,14 @@
 "use client";
-import { useSyncExternalStore, useState } from "react";
+import { useState } from "react";
 import { Menu, X, ArrowUpRight, Mail, MessageCircle, ExternalLink } from "lucide-react";
 import Image from "next/image";
 import type { Project, SiteSettings } from "@/lib/types";
 import ImageGallery from "@/components/ImageGallery";
 import DownloadGate from "@/components/DownloadGate";
 import ContactForm from "@/components/ContactForm";
+import { useLocale, type Locale } from "@/hooks/useLocale";
 
-type Locale = "id" | "en";
-
-const localeStore = {
-  listeners: new Set<() => void>(),
-  subscribe(listener: () => void) {
-    localeStore.listeners.add(listener);
-    return () => {
-      localeStore.listeners.delete(listener);
-    };
-  },
-  getSnapshot(): Locale {
-    try {
-      return localStorage.getItem("locale") === "en" ? "en" : "id";
-    } catch {
-      return "id";
-    }
-  },
-  getServerSnapshot(): Locale {
-    return "id";
-  },
-  set(locale: Locale) {
-    try {
-      localStorage.setItem("locale", locale);
-    } catch {
-      // Ignore unavailable storage (private mode); locale still applies in-memory.
-    }
-    for (const listener of localeStore.listeners) listener();
-  },
-};
-
-function useLocale(): [Locale, (locale: Locale) => void] {
-  const locale = useSyncExternalStore(localeStore.subscribe, localeStore.getSnapshot, localeStore.getServerSnapshot);
-  return [locale, localeStore.set];
-}
-
-function t(settings: SiteSettings, locale: "id" | "en") {
+function t(settings: SiteSettings, locale: Locale) {
   return {
     tagline: locale === "en" ? settings.taglineEn || settings.tagline : settings.tagline,
     heroTitle: locale === "en" ? settings.heroTitleEn || settings.heroTitle : settings.heroTitle,
@@ -50,7 +16,7 @@ function t(settings: SiteSettings, locale: "id" | "en") {
   };
 }
 
-function projectText(p: Project, locale: "id" | "en") {
+function projectText(p: Project, locale: Locale) {
   return {
     title: locale === "en" ? p.titleEn || p.title : p.title,
     excerpt: locale === "en" ? p.excerptEn || p.excerpt : p.excerpt,

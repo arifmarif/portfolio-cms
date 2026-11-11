@@ -7,6 +7,7 @@ export function AdminShell({ children, active }: { children: React.ReactNode; ac
     { href: "/admin/projects", label: "Manajemen Proyek", icon: "folder_special", key: "projects" },
     { href: "/admin/themes", label: "Palet & Tema", icon: "palette", key: "themes" },
     { href: "/admin/downloads", label: "Data Unduhan", icon: "download", key: "downloads" },
+    { href: "/admin/messages", label: "Pesan Kontak", icon: "mail", key: "messages" },
     { href: "/admin/settings", label: "Pengaturan", icon: "tune", key: "settings" },
   ];
   return (

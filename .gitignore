@@ -37,7 +37,6 @@ yarn-error.log*
 .vercel
 
 # local data & uploads
-/data/content.json
 /public/uploads
 
 # typescript

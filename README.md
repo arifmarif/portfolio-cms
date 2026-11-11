@@ -15,7 +15,7 @@ Buka http://localhost:3000. Admin: http://localhost:3000/admin/login (password d
 
 - Beranda publik dengan template aktif (Editorial / Minimal / Bold)
 - Admin: profil & hero, manajemen proyek (CRUD, status, tag), galeri template + pratinjau live (viewport desktop/tablet/mobile), publish, ekspor PDF (via print)
-- Data disimpan di `data/content.json` (server-side). Untuk produksi gunakan PostgreSQL (Neon) + storage R2/S3 (lihat `prisma` schema rencana).
+- Data disimpan di PostgreSQL via Prisma (Neon) + storage gambar di Vercel Blob / R2 / S3 (lihat `prisma/schema.prisma`).
 
 ## Skrip
 

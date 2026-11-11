@@ -112,10 +112,11 @@ export default function DashboardClient({
               </div>
               <div>
                 <label className="block text-sm text-on-surface-variant mb-1">Bahasa</label>
-                <select disabled className="w-full rounded-lg bg-surface-container-lowest px-3 py-2 text-on-surface ring-1 ring-outline-variant">
+                <select className="w-full rounded-lg bg-surface-container-lowest px-3 py-2 text-on-surface ring-1 ring-outline-variant">
                   <option>Bahasa Indonesia (aktif)</option>
-                  <option>English (belum didukung)</option>
+                  <option>English (didukung — toggle publik via template)</option>
                 </select>
+                <p className="text-xs text-outline mt-1">Bahasa Inggris diisi melalui field (EN) pada profil, hero, dan proyek, serta toggle publik pada template.</p>
               </div>
               <Field label="Pengalaman (tahun)" type="number" value={String(draft.experienceYears)} onChange={(v) => update("experienceYears", Number(v))} />
               <Field label="Lokasi" value={draft.location} onChange={(v) => update("location", v)} />

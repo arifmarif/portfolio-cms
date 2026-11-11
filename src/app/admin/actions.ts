@@ -201,6 +201,7 @@ export async function publishAll() {
   state.draftSettings = { ...state.settings };
   state.projects = state.projects.map((p) => (p.status === "DRAFT" ? { ...p, status: "PUBLISHED" } : p));
   await writeState(state);
+  await logAudit("settings.publish_all", `template=${state.draftSettings.activeTemplateId}`);
   revalidatePath("/");
   revalidatePath("/admin");
 }

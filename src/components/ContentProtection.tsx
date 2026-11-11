@@ -1,6 +1,11 @@
 "use client";
 import { useEffect } from "react";
 
+// Best-effort, client-side content protection. Mitigates certain actions such as
+// disabling image drag/select and blocking context menu on images. It cannot fully
+// prevent screenshots or screen recording, and the supported sharing flow for the
+// PDF is the print export (see /print) rather than browser capture.
+
 export default function ContentProtection() {
   useEffect(() => {
     if (typeof window === "undefined") return;

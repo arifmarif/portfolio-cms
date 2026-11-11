@@ -1,7 +1,7 @@
 "use client";
 import { useState, useTransition } from "react";
 import { TemplateRenderer } from "@/components/templates";
-import { updateActiveTemplate, publishSettings } from "../actions";
+import { updateActiveTemplate, publishAll } from "../actions";
 import type { SiteSettings, Project, Template } from "@/lib/types";
 
 export function ThemePreviewClient({
@@ -18,6 +18,7 @@ export function ThemePreviewClient({
   const [selected, setSelected] = useState(settings.activeTemplateId);
   const [viewport, setViewport] = useState<"desktop" | "tablet" | "mobile">("desktop");
   const [pending, startTransition] = useTransition();
+  const [publishState, setPublishState] = useState<{ pending: boolean; message: string }>({ pending: false, message: "" });
 
   const previewSettings = { ...settings, activeTemplateId: selected };
 
@@ -26,9 +27,15 @@ export function ThemePreviewClient({
       await updateActiveTemplate(selected);
     });
   }
-  function publish() {
+  async function publish() {
+    setPublishState({ pending: true, message: "" });
     startTransition(async () => {
-      await publishSettings();
+      try {
+        await publishAll();
+        setPublishState({ pending: false, message: "Berhasil diterbitkan: pengaturan draf dan proyek bertahap kini dipublikasi." });
+      } catch {
+        setPublishState({ pending: false, message: "Terjadi kegagalan saat menerbitkan. Silakan coba lagi." });
+      }
     });
   }
 
@@ -46,6 +53,7 @@ export function ThemePreviewClient({
             Terbitkan Versi Ini
           </button>
         </div>
+        {publishState.message && <p className="text-sm text-on-surface-variant">{publishState.message}</p>}
       </div>
 
       <div className="flex gap-2">

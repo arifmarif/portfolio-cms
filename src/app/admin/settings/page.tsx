@@ -10,7 +10,7 @@ export default async function SettingsPage() {
         <div className="rounded-xl bg-surface-container-low p-6 space-y-2 text-sm text-on-surface-variant">
           <p>• Kata sandi admin diatur via env <code>ADMIN_PASSWORD</code>.</p>
           <p>• Ekspor PDF tersedia di halaman pratinjau tema.</p>
-          <p>• Data disimpan di <code>data/content.json</code> (server). Untuk produksi gunakan PostgreSQL (Neon) + storage R2.</p>
+          <p>• Data disimpan di PostgreSQL via Prisma (Neon) + storage gambar di Vercel Blob / R2 / S3.</p>
           <p>• Perlindungan konten (watermark, pembatasan klik kanan) bersifat pencegahan sederhana dan tidak dapat sepenuhnya mencegah tangkapan layar.</p>
         </div>
       </div>

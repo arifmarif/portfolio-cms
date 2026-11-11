@@ -1,33 +1,149 @@
+"use client";
+import { ArrowUpRight, Mail, MessageCircle, ExternalLink } from "lucide-react";
 import type { Project, SiteSettings } from "@/lib/types";
+import ImageGallery from "@/components/ImageGallery";
+import DownloadGate from "@/components/DownloadGate";
+import ContactForm from "@/components/ContactForm";
+import { useLocale, type Locale } from "@/hooks/useLocale";
+
+function t(settings: SiteSettings, locale: Locale) {
+  return {
+    tagline: locale === "en" ? settings.taglineEn || settings.tagline : settings.tagline,
+    heroTitle: locale === "en" ? settings.heroTitleEn || settings.heroTitle : settings.heroTitle,
+    heroSubtitle: locale === "en" ? settings.heroSubtitleEn || settings.heroSubtitle : settings.heroSubtitle,
+  };
+}
+
+function projectText(p: Project, locale: Locale) {
+  return {
+    title: locale === "en" ? p.titleEn || p.title : p.title,
+    excerpt: locale === "en" ? p.excerptEn || p.excerpt : p.excerpt,
+    description: locale === "en" ? p.descriptionEn || p.description : p.description,
+    altText: locale === "en" ? p.altTextEn || p.altText : p.altText,
+    tags: locale === "en" ? p.tagsEn || p.tags : p.tags,
+    gallery: p.gallery.map((g) => ({ url: g.url, alt: locale === "en" ? g.altEn || g.alt : g.alt })),
+  };
+}
+
+const labels = {
+  id: { karya: "Karya", kontak: "Kontak", lihat: "Lihat Karya Terpilih", hubungi: "Hubungi Langsung", siap: "Siap Mewujudkan Produk Berkualitas Tinggi?", hub: "Hubungi saya melalui email." },
+  en: { karya: "Work", kontak: "Contact", lihat: "View Selected Work", hubungi: "Contact Directly", siap: "Ready to Build High-Quality Products?", hub: "Reach me via email." },
+};
 
 export function MinimalTemplate({ settings, projects }: { settings: SiteSettings; projects: Project[] }) {
+  const [locale, switchLocale] = useLocale();
+  const tx = t(settings, locale);
+  const L = labels[locale];
   const published = projects.filter((p) => p.status === "PUBLISHED");
+
   return (
     <div className="min-h-screen bg-surface-container-lowest text-on-surface">
       <header className="max-w-3xl mx-auto px-6 py-8 flex items-center justify-between">
         <span className="font-display text-xl font-bold">{settings.brandName}</span>
-        <a href="#kontak" className="text-sm text-primary">Kontak</a>
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-1 text-sm">
+            <button onClick={() => switchLocale("id")} className={`px-2 py-1 rounded ${locale === "id" ? "bg-primary-container text-on-primary-container" : "text-on-surface-variant"}`}>ID</button>
+            <span className="text-outline">|</span>
+            <button onClick={() => switchLocale("en")} className={`px-2 py-1 rounded ${locale === "en" ? "bg-primary-container text-on-primary-container" : "text-on-surface-variant"}`}>EN</button>
+          </div>
+          {settings.availability && (
+            <span className="hidden sm:inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-container-high text-secondary text-xs">
+              <span className="w-2 h-2 rounded-full bg-secondary animate-pulse" />
+              {locale === "en" ? "Available" : "Tersedia"}
+            </span>
+          )}
+          <a href="#kontak" className="text-sm text-primary">{L.kontak}</a>
+        </div>
       </header>
+
       <main className="max-w-3xl mx-auto px-6 space-y-12 pb-16">
-        <section>
-          <h1 className="font-display text-4xl font-bold leading-tight">{settings.heroTitle}</h1>
-          <p className="mt-4 text-on-surface-variant">{settings.heroSubtitle}</p>
-        </section>
-        <section>
-          <h2 className="font-display text-2xl font-semibold mb-4">Karya</h2>
-          <div className="space-y-6">
-            {published.map((p) => (
-              <div key={p.id} className="border-b border-outline-variant/30 pb-4">
-                <h3 className="font-display text-lg font-semibold">{p.title}</h3>
-                <p className="text-sm text-on-surface-variant">{p.excerpt}</p>
-              </div>
-            ))}
+        <section className="pt-8 space-y-6">
+          <span className="font-mono text-sm text-primary tracking-wide">01 — {tx.tagline.toUpperCase()}</span>
+          <h1 className="font-display text-4xl font-bold leading-tight">{tx.heroTitle}</h1>
+          <p className="text-lg text-on-surface-variant">{tx.heroSubtitle}</p>
+          <div className="flex flex-wrap gap-3 pt-2">
+            <a href="#karya" className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-primary text-on-primary font-medium hover:bg-primary-fixed-dim transition-colors">
+              {L.lihat}
+              <ArrowUpRight aria-hidden="true" />
+            </a>
+            <a href="#kontak" className="px-6 py-3 rounded-lg text-on-surface font-medium underline decoration-outline-variant underline-offset-4 hover:text-primary transition-colors">
+              {L.hubungi}
+            </a>
+            <DownloadGate label={locale === "en" ? "Download PDF" : "Unduh PDF"} />
+          </div>
+          <div className="pt-4 flex flex-wrap gap-4 text-outline font-mono text-xs">
+            <span>{settings.experienceYears}+ {locale === "en" ? "years experience" : "tahun pengalaman"}</span>
+            <span>{settings.projectsCount} {locale === "en" ? "projects" : "proyek"}</span>
+            <span>{settings.location}</span>
           </div>
         </section>
-        <section id="kontak">
-          <h2 className="font-display text-2xl font-semibold mb-2">Kontak</h2>
-          <a href={`mailto:${settings.email}`} className="text-primary">{settings.email}</a>
-          {settings.phone && <p className="text-sm text-on-surface-variant mt-1">{settings.phone}</p>}
+
+        <section id="karya">
+          <h2 className="font-display text-2xl font-semibold mb-4">{L.karya}</h2>
+          <div className="space-y-10">
+            {published.map((p) => {
+              const pt = projectText(p, locale);
+              return (
+                <article key={p.id} className="space-y-3">
+                  <ImageGallery images={pt.gallery.length ? pt.gallery : [{ url: p.thumbnailUrl, alt: pt.altText }]} />
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <h3 className="font-display text-lg font-semibold">{pt.title}</h3>
+                      <p className="text-sm text-on-surface-variant">{pt.excerpt}</p>
+                    </div>
+                    {p.year && <span className="shrink-0 font-mono text-xs text-outline">{p.year}</span>}
+                  </div>
+                  {(p.client || p.category) && (
+                    <p className="text-xs font-mono uppercase tracking-wider text-outline">
+                      {[p.client, p.category].filter(Boolean).join(" · ")}
+                    </p>
+                  )}
+                </article>
+              );
+            })}
+            {published.length === 0 && <p className="text-on-surface-variant">Belum ada proyek.</p>}
+          </div>
+        </section>
+
+        <section id="kontak" className="pt-12 border-t border-outline-variant/30">
+          <h2 className="font-display text-2xl font-semibold mb-2">{L.siap}</h2>
+          <p className="text-on-surface-variant">{L.hub}</p>
+          <div className="flex flex-wrap gap-6 pt-4">
+            <a href={`mailto:${settings.email}`} className="inline-flex items-center gap-2 text-primary hover:text-primary-fixed-dim transition-colors">
+              <Mail aria-hidden="true" className="size-4" />
+              {settings.email}
+            </a>
+            {settings.whatsapp && (() => {
+              const normalized = settings.whatsapp.replace(/\D/g, "");
+              if (!normalized) return null;
+              return (
+                <a
+                  href={`https://wa.me/${normalized}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-primary hover:text-primary-fixed-dim transition-colors"
+                >
+                  <MessageCircle aria-hidden="true" className="size-4" />
+                  {settings.whatsapp}
+                </a>
+              );
+            })()}
+            <a href={settings.linkedin} className="inline-flex items-center gap-2 text-primary hover:text-primary-fixed-dim transition-colors">
+              <svg aria-hidden="true" className="size-4" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+              </svg>
+              LinkedIn
+            </a>
+            {settings.portfolioUrl && (
+              <a href={settings.portfolioUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-primary hover:text-primary-fixed-dim transition-colors">
+                <ExternalLink aria-hidden="true" className="size-4" />
+                {locale === "en" ? "Portfolio" : "Portofolio"}
+              </a>
+            )}
+          </div>
+          <div className="pt-6">
+            <ContactForm />
+          </div>
         </section>
       </main>
     </div>
