@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 
 const PDF_NAME = "Portofolio-Arif-Rizki.pdf";
 
@@ -91,17 +92,18 @@ export default function DownloadGate({ label = "Unduh Portofolio (PDF)" }: { lab
         {label}
       </button>
 
-      {open && (
-        <div className="fixed inset-0 z-50 overflow-y-auto bg-black/60">
-          <div className="flex min-h-full items-center justify-center p-4">
-            <div
-              ref={dialogRef}
-              role="dialog"
-              aria-modal="true"
-              aria-labelledby="download-portfolio-pdf-title"
-              tabIndex={-1}
-              className="w-full max-w-md rounded-xl bg-surface-container-low p-6 space-y-4 shadow-xl max-h-[calc(100vh-2rem)] overflow-y-auto"
-            >
+      {open &&
+        createPortal(
+          <div className="fixed inset-0 z-50 overflow-y-auto bg-black/60">
+            <div className="flex min-h-full items-center justify-center p-4">
+              <div
+                ref={dialogRef}
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="download-portfolio-pdf-title"
+                tabIndex={-1}
+                className="w-full max-w-md rounded-xl bg-surface-container-low p-6 space-y-4 shadow-xl max-h-[calc(100vh-2rem)] overflow-y-auto"
+              >
               <h2 id="download-portfolio-pdf-title" className="font-display text-xl font-bold">Unduh Portofolio PDF</h2>
               <p className="text-sm text-on-surface-variant">
                 Isi data berikut sebelum mengunduh. Email dan nomor HP akan disimpan untuk keperluan sesuai kebijakan privasi situs.
@@ -139,10 +141,11 @@ export default function DownloadGate({ label = "Unduh Portofolio (PDF)" }: { lab
                   </button>
                 </div>
               </form>
+              </div>
             </div>
-          </div>
-        </div>
-      )}
+          </div>,
+          document.body
+        )}
     </>
   );
 }
