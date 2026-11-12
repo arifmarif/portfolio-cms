@@ -45,7 +45,7 @@ export default function ProjectForm({ mode, action, project, submitLabel }: Prop
           <BilingualField idName="title" enName="titleEn" idLabel="Judul" enLabel="Judul (EN)" valueId={p?.title} valueEn={p?.titleEn} required />
           <BilingualField idName="category" enName="categoryEn" idLabel="Kategori" enLabel="Kategori (EN)" valueId={p?.category} valueEn={p?.categoryEn} />
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="space-y-4">
           <BilingualField idName="excerpt" enName="excerptEn" idLabel="Ringkasan" enLabel="Ringkasan (EN)" valueId={p?.excerpt} valueEn={p?.excerptEn} />
           <BilingualField idName="description" enName="descriptionEn" idLabel="Deskripsi" enLabel="Deskripsi (EN)" valueId={p?.description} valueEn={p?.descriptionEn} textarea />
         </div>
@@ -58,14 +58,10 @@ export default function ProjectForm({ mode, action, project, submitLabel }: Prop
       </Section>
 
       <Section title="Detail Studi Kasus" description="Rincian studi kasus dari CMS. Bagian yang tidak diisi otomatis tidak ditampilkan di halaman publik." defaultOpen>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <BilingualField idName="caseBackground" enName="caseBackgroundEn" idLabel="Latar Belakang" enLabel="Latar Belakang (EN)" valueId={p?.caseBackground} valueEn={p?.caseBackgroundEn} textarea />
-          <BilingualField idName="caseChallenge" enName="caseChallengeEn" idLabel="Tantangan / Kebutuhan Klien" enLabel="Tantangan / Kebutuhan Klien (EN)" valueId={p?.caseChallenge} valueEn={p?.caseChallengeEn} textarea />
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <BilingualField idName="caseRole" enName="caseRoleEn" idLabel="Peran & Tanggung Jawab" enLabel="Peran & Tanggung Jawab (EN)" valueId={p?.caseRole} valueEn={p?.caseRoleEn} textarea />
-          <BilingualField idName="caseTech" enName="caseTechEn" idLabel="Teknologi / Perangkat / Tools (pisah koma)" enLabel="Teknologi / Perangkat / Tools (EN, pisah koma)" valueId={p?.caseTech} valueEn={p?.caseTechEn} />
-        </div>
+        <BilingualField idName="caseBackground" enName="caseBackgroundEn" idLabel="Latar Belakang" enLabel="Latar Belakang (EN)" valueId={p?.caseBackground} valueEn={p?.caseBackgroundEn} textarea />
+        <BilingualField idName="caseChallenge" enName="caseChallengeEn" idLabel="Tantangan / Kebutuhan Klien" enLabel="Tantangan / Kebutuhan Klien (EN)" valueId={p?.caseChallenge} valueEn={p?.caseChallengeEn} textarea />
+        <BilingualField idName="caseRole" enName="caseRoleEn" idLabel="Peran & Tanggung Jawab" enLabel="Peran & Tanggung Jawab (EN)" valueId={p?.caseRole} valueEn={p?.caseRoleEn} textarea />
+        <BilingualField idName="caseTech" enName="caseTechEn" idLabel="Teknologi / Perangkat / Tools (pisah koma)" enLabel="Teknologi / Perangkat / Tools (EN, pisah koma)" valueId={p?.caseTech} valueEn={p?.caseTechEn} />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <StepsEditor name="caseImplementation" label="Langkah Implementasi (ID)" defaultValue={p?.caseImplementation || []} />
           <StepsEditor name="caseImplementationEn" label="Implementation Steps (EN)" defaultValue={p?.caseImplementationEn || []} />

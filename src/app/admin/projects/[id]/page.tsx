@@ -15,7 +15,7 @@ export default async function EditProjectPage({ params }: { params: Promise<{ id
 
   return (
     <AdminShell active="projects">
-      <div className="max-w-3xl space-y-4">
+      <div className="max-w-[1400px] space-y-4">
         <h1 className="font-display text-2xl font-bold">Edit Proyek</h1>
         <ProjectForm mode="edit" action={updateProject.bind(null, id)} project={p} submitLabel="Simpan Perubahan" />
       </div>

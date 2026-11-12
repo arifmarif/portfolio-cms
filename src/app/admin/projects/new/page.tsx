@@ -7,7 +7,7 @@ export default async function NewProjectPage() {
   await requireAdmin();
   return (
     <AdminShell active="projects">
-      <div className="max-w-3xl space-y-4">
+      <div className="max-w-[1400px] space-y-4">
         <h1 className="font-display text-2xl font-bold">Tambah Proyek Baru</h1>
         <ProjectForm mode="create" action={createProject} submitLabel="Simpan Proyek" />
       </div>
