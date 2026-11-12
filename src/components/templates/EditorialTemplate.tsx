@@ -6,6 +6,7 @@ import type { Project, SiteSettings } from "@/lib/types";
 import ImageGallery from "@/components/ImageGallery";
 import DownloadGate from "@/components/DownloadGate";
 import ContactForm from "@/components/ContactForm";
+import Link from "next/link";
 import { useLocale, type Locale } from "@/hooks/useLocale";
 
 function t(settings: SiteSettings, locale: Locale) {
@@ -299,7 +300,7 @@ export function EditorialTemplate({ settings, projects }: { settings: SiteSettin
               {published.map((p) => {
                 const pt = projectText(p, locale);
                 return (
-                  <article key={p.id} className="group rounded-xl bg-surface-container-low overflow-hidden border border-outline-variant/20 hover:border-primary/40 transition">
+                  <article key={p.id} className="group relative rounded-xl bg-surface-container-low overflow-hidden border border-outline-variant/20 hover:border-primary/40 transition">
                     <ImageGallery images={pt.gallery.length ? pt.gallery : [{ url: p.thumbnailUrl, alt: pt.altText }]} />
                     <div className="p-5 space-y-2">
                       <div className="flex flex-wrap gap-2">
@@ -318,6 +319,11 @@ export function EditorialTemplate({ settings, projects }: { settings: SiteSettin
                         </p>
                       )}
                     </div>
+                  <Link
+                    href={`/projects/${p.slug}`}
+                    aria-label={`${pt.title} — ${locale === "en" ? "View case study" : "Lihat Studi Kasus"}`}
+                    className="absolute inset-0 z-0 rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                  />
                   </article>
                 );
               })}

@@ -24,6 +24,18 @@ export interface Project {
   status: ProjectStatus;
   order: number;
   featured?: boolean;
+  caseBackground?: string;
+  caseBackgroundEn?: string;
+  caseChallenge?: string;
+  caseChallengeEn?: string;
+  caseRole?: string;
+  caseRoleEn?: string;
+  caseImplementation?: string[];
+  caseImplementationEn?: string[];
+  caseTech?: string;
+  caseTechEn?: string;
+  caseResults?: string;
+  caseResultsEn?: string;
 }
 
 export interface SiteSettings {

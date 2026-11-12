@@ -35,6 +35,18 @@ model Project {
   order         Int
   featured      Boolean   @default(false)
   gallery       Json
+  caseBackground       String?
+  caseBackgroundEn     String?
+  caseChallenge        String?
+  caseChallengeEn      String?
+  caseRole             String?
+  caseRoleEn           String?
+  caseImplementation   String[]  @default([])
+  caseImplementationEn String[]  @default([])
+  caseTech             String?
+  caseTechEn           String?
+  caseResults          String?
+  caseResultsEn        String?
   idUpdatedAt   DateTime?
   enUpdatedAt   DateTime?
   createdAt     DateTime  @default(now())

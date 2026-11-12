@@ -4,6 +4,7 @@ import type { Project, SiteSettings } from "@/lib/types";
 import ImageGallery from "@/components/ImageGallery";
 import DownloadGate from "@/components/DownloadGate";
 import ContactForm from "@/components/ContactForm";
+import Link from "next/link";
 import { useLocale, type Locale } from "@/hooks/useLocale";
 
 function t(settings: SiteSettings, locale: Locale) {
@@ -84,7 +85,7 @@ export function MinimalTemplate({ settings, projects }: { settings: SiteSettings
             {published.map((p) => {
               const pt = projectText(p, locale);
               return (
-                <article key={p.id} className="space-y-3">
+                <article key={p.id} className="group relative space-y-3">
                   <ImageGallery images={pt.gallery.length ? pt.gallery : [{ url: p.thumbnailUrl, alt: pt.altText }]} />
                   <div className="flex items-start justify-between gap-4">
                     <div>
@@ -98,6 +99,11 @@ export function MinimalTemplate({ settings, projects }: { settings: SiteSettings
                       {[p.client, p.category].filter(Boolean).join(" · ")}
                     </p>
                   )}
+                  <Link
+                    href={`/projects/${p.slug}`}
+                    aria-label={`${pt.title} — ${locale === "en" ? "View case study" : "Lihat Studi Kasus"}`}
+                    className="absolute inset-0 z-0 rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                  />
                 </article>
               );
             })}

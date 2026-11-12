@@ -110,6 +110,18 @@ export async function createProject(formData: FormData) {
     order: state.projects.length + 1,
     featured: formData.get("featured") === "on",
     gallery: parseGallery(formData.get("gallery")),
+    caseBackground: String(formData.get("caseBackground") || ""),
+    caseBackgroundEn: String(formData.get("caseBackgroundEn") || ""),
+    caseChallenge: String(formData.get("caseChallenge") || ""),
+    caseChallengeEn: String(formData.get("caseChallengeEn") || ""),
+    caseRole: String(formData.get("caseRole") || ""),
+    caseRoleEn: String(formData.get("caseRoleEn") || ""),
+    caseImplementation: parseStringList(formData.get("caseImplementation")),
+    caseImplementationEn: parseStringList(formData.get("caseImplementationEn")),
+    caseTech: String(formData.get("caseTech") || ""),
+    caseTechEn: String(formData.get("caseTechEn") || ""),
+    caseResults: String(formData.get("caseResults") || ""),
+    caseResultsEn: String(formData.get("caseResultsEn") || ""),
     idUpdatedAt: new Date().toISOString(),
     enUpdatedAt: formData.get("titleEn") ? new Date().toISOString() : undefined,
   };
@@ -145,12 +157,24 @@ export async function updateProject(id: string, formData: FormData) {
   p.altTextEn = String(formData.get("altTextEn") || p.altTextEn || "");
   p.tags = String(formData.get("tags") || "").split(",").map((t) => t.trim()).filter(Boolean);
   p.tagsEn = String(formData.get("tagsEn") || "").split(",").map((t) => t.trim()).filter(Boolean);
-  p.client = String(formData.get("client") || p.client);
-  p.year = String(formData.get("year") || p.year);
+  p.client = String(formData.get("client") || p.client || "");
+  p.year = String(formData.get("year") || p.year || "");
   p.status = (formData.get("status") as "DRAFT" | "PUBLISHED" | "ARCHIVED") || p.status;
   p.featured = formData.get("featured") === "on";
   const g = parseGallery(formData.get("gallery"));
   p.gallery = g;
+  p.caseBackground = String(formData.get("caseBackground") || p.caseBackground || "");
+  p.caseBackgroundEn = String(formData.get("caseBackgroundEn") || p.caseBackgroundEn || "");
+  p.caseChallenge = String(formData.get("caseChallenge") || p.caseChallenge || "");
+  p.caseChallengeEn = String(formData.get("caseChallengeEn") || p.caseChallengeEn || "");
+  p.caseRole = String(formData.get("caseRole") || p.caseRole || "");
+  p.caseRoleEn = String(formData.get("caseRoleEn") || p.caseRoleEn || "");
+  p.caseImplementation = parseStringList(formData.get("caseImplementation"));
+  p.caseImplementationEn = parseStringList(formData.get("caseImplementationEn"));
+  p.caseTech = String(formData.get("caseTech") || p.caseTech || "");
+  p.caseTechEn = String(formData.get("caseTechEn") || p.caseTechEn || "");
+  p.caseResults = String(formData.get("caseResults") || p.caseResults || "");
+  p.caseResultsEn = String(formData.get("caseResultsEn") || p.caseResultsEn || "");
   if (idChanged) p.idUpdatedAt = new Date().toISOString();
   if (enChanged) p.enUpdatedAt = new Date().toISOString();
   if (!p.idUpdatedAt) p.idUpdatedAt = new Date().toISOString();
@@ -169,6 +193,19 @@ export async function deleteProject(id: string) {
   await logAudit("project.delete", id);
   revalidatePath("/admin/projects");
   revalidatePath("/");
+}
+
+function parseStringList(raw: FormDataEntryValue | null): string[] {
+  if (!raw) return [];
+  try {
+    const arr = JSON.parse(String(raw));
+    if (!Array.isArray(arr)) return [];
+    return arr
+      .filter((x) => typeof x === "string" && x.trim().length > 0)
+      .map((x) => (x as string).trim());
+  } catch {
+    return [];
+  }
 }
 
 function parseGallery(raw: FormDataEntryValue | null): { url: string; alt: string; altEn?: string }[] {

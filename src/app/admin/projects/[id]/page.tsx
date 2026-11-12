@@ -2,6 +2,7 @@ import { readState } from "@/lib/db";
 import { requireAdmin } from "@/lib/auth";
 import { AdminShell } from "@/components/AdminShell";
 import GalleryEditor from "@/components/GalleryEditor";
+import StepsEditor from "@/components/StepsEditor";
 
 export const dynamic = "force-dynamic";
 
@@ -35,6 +36,22 @@ export default async function EditProjectPage({ params }: { params: Promise<{ id
           <Field label="Alt Text (cover)" name="altText" defaultValue={p.altText} />
           <Field label="Alt Text (EN)" name="altTextEn" defaultValue={p.altTextEn || ""} />
           <GalleryEditor defaultValue={p.gallery || []} />
+          <div className="pt-6 border-t border-outline-variant/30 space-y-4">
+            <h2 className="font-display text-xl font-semibold">Detail Studi Kasus</h2>
+            <p className="text-sm text-on-surface-variant">Rincian studi kasus dari CMS. Bagian yang tidak diisi otomatis tidak ditampilkan di halaman publik.</p>
+            <Field label="Latar Belakang" name="caseBackground" defaultValue={p.caseBackground || ""} textarea />
+            <Field label="Latar Belakang (EN)" name="caseBackgroundEn" defaultValue={p.caseBackgroundEn || ""} textarea />
+            <Field label="Tantangan / Kebutuhan Klien" name="caseChallenge" defaultValue={p.caseChallenge || ""} textarea />
+            <Field label="Tantangan / Kebutuhan Klien (EN)" name="caseChallengeEn" defaultValue={p.caseChallengeEn || ""} textarea />
+            <Field label="Peran & Tanggung Jawab" name="caseRole" defaultValue={p.caseRole || ""} textarea />
+            <Field label="Peran & Tanggung Jawab (EN)" name="caseRoleEn" defaultValue={p.caseRoleEn || ""} textarea />
+            <StepsEditor name="caseImplementation" label="Langkah Implementasi (ID)" defaultValue={p.caseImplementation || []} />
+            <StepsEditor name="caseImplementationEn" label="Implementation Steps (EN)" defaultValue={p.caseImplementationEn || []} />
+            <Field label="Teknologi / Perangkat / Tools (pisah koma)" name="caseTech" defaultValue={p.caseTech || ""} />
+            <Field label="Teknologi / Perangkat / Tools (EN, pisah koma)" name="caseTechEn" defaultValue={p.caseTechEn || ""} />
+            <Field label="Hasil / Dampak" name="caseResults" defaultValue={p.caseResults || ""} textarea />
+            <Field label="Hasil / Dampak (EN)" name="caseResultsEn" defaultValue={p.caseResultsEn || ""} textarea />
+          </div>
           <Field label="Tag (pisah koma)" name="tags" defaultValue={p.tags.join(", ")} />
           <Field label="Tag (EN, pisah koma)" name="tagsEn" defaultValue={(p.tagsEn || []).join(", ")} />
           <Field label="Klien" name="client" defaultValue={p.client || ""} />
