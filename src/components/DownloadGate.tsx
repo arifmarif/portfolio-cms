@@ -4,7 +4,13 @@ import { createPortal } from "react-dom";
 
 const PDF_NAME = "Portofolio-Arif-Rizki.pdf";
 
-export default function DownloadGate({ label = "Unduh Portofolio (PDF)" }: { label?: string }) {
+export default function DownloadGate({
+  label = "Undih Portofolio (PDF)",
+  cvUrl,
+}: {
+  label?: string;
+  cvUrl?: string;
+}) {
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -37,14 +43,14 @@ export default function DownloadGate({ label = "Unduh Portofolio (PDF)" }: { lab
     };
   }, [open]);
 
-  function proceed() {
-    window.open("/print", "_blank");
+  function proceed(targetUrl?: string) {
+    window.open(targetUrl || "/print", "_blank");
   }
 
   function handleClick() {
     const key = `portfolio_download_submitted`;
     if (typeof window !== "undefined" && sessionStorage.getItem(key)) {
-      proceed();
+      if (cvUrl) proceed(cvUrl);
       return;
     }
     setOpen(true);
@@ -74,7 +80,11 @@ export default function DownloadGate({ label = "Unduh Portofolio (PDF)" }: { lab
       }
       if (typeof window !== "undefined") sessionStorage.setItem("portfolio_download_submitted", "1");
       setOpen(false);
-      proceed();
+      if (cvUrl) {
+        proceed(cvUrl);
+      } else {
+        setMessage("CV belum tersedia. Silakan coba lagi nanti.");
+      }
     } catch {
       setMessage("Terjadi kesalahan. Coba lagi.");
     }
@@ -91,7 +101,7 @@ export default function DownloadGate({ label = "Unduh Portofolio (PDF)" }: { lab
       >
         {label}
       </button>
-
+      {message && <p className="text-sm text-error">{message}</p>}
       {open &&
         createPortal(
           <div className="fixed inset-0 z-50 overflow-y-auto bg-black/60">
@@ -104,43 +114,42 @@ export default function DownloadGate({ label = "Unduh Portofolio (PDF)" }: { lab
                 tabIndex={-1}
                 className="w-full max-w-md rounded-xl bg-surface-container-low p-6 space-y-4 shadow-xl max-h-[calc(100vh-2rem)] overflow-y-auto"
               >
-              <h2 id="download-portfolio-pdf-title" className="font-display text-xl font-bold">Unduh Portofolio PDF</h2>
-              <p className="text-sm text-on-surface-variant">
-                Isi data berikut sebelum mengunduh. Email dan nomor HP akan disimpan untuk keperluan sesuai kebijakan privasi situs.
-              </p>
-              <form onSubmit={handleSubmit} className="space-y-3">
-                <div>
-                  <label htmlFor="download-portfolio-pdf-email" className="block text-sm text-on-surface-variant mb-1">Email</label>
-                  <input
-                    id="download-portfolio-pdf-email"
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="w-full rounded-lg bg-surface-container-lowest px-3 py-2 text-on-surface ring-1 ring-outline-variant focus:ring-primary"
-                  />
-                  {errors.email && <p className="text-xs text-error mt-1">{errors.email}</p>}
-                </div>
-                <div>
-                  <label htmlFor="download-portfolio-pdf-phone" className="block text-sm text-on-surface-variant mb-1">Nomor HP</label>
-                  <input
-                    id="download-portfolio-pdf-phone"
-                    type="tel"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    className="w-full rounded-lg bg-surface-container-lowest px-3 py-2 text-on-surface ring-1 ring-outline-variant focus:ring-primary"
-                  />
-                  {errors.phone && <p className="text-xs text-error mt-1">{errors.phone}</p>}
-                </div>
-                {message && <p className="text-sm text-error">{message}</p>}
-                <div className="flex gap-2 justify-end">
-                  <button type="button" onClick={() => setOpen(false)} className="px-4 py-2 rounded-lg bg-surface-container text-on-surface hover:bg-surface-container-high">
-                    Batal
-                  </button>
-                  <button type="submit" disabled={submitting} className="px-4 py-2 rounded-lg bg-primary-container text-on-primary-container font-medium hover:bg-primary">
-                    {submitting ? "Memproses..." : "Lanjutkan Unduhan"}
-                  </button>
-                </div>
-              </form>
+                <h2 id="download-portfolio-pdf-title" className="font-display text-xl font-bold">Unduh Portofolio PDF</h2>
+                <p className="text-sm text-on-surface-variant">
+                  Isi data berikut sebelum mengunduh. Email dan nomor HP akan disimpan untuk keperluan sesuai kebijakan privasi situs.
+                </p>
+                <form onSubmit={handleSubmit} className="space-y-3">
+                  <div>
+                    <label htmlFor="download-portfolio-pdf-email" className="block text-sm text-on-surface-variant mb-1">Email</label>
+                    <input
+                      id="download-portfolio-pdf-email"
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="w-full rounded-lg bg-surface-container-lowest px-3 py-2 text-on-surface ring-1 ring-outline-variant focus:ring-primary"
+                    />
+                    {errors.email && <p className="text-xs text-error mt-1">{errors.email}</p>}
+                  </div>
+                  <div>
+                    <label htmlFor="download-portfolio-pdf-phone" className="block text-sm text-on-surface-variant mb-1">Nomor HP</label>
+                    <input
+                      id="download-portfolio-pdf-phone"
+                      type="tel"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      className="w-full rounded-lg bg-surface-container-lowest px-3 py-2 text-on-surface ring-1 ring-outline-variant focus:ring-primary"
+                    />
+                    {errors.phone && <p className="text-xs text-error mt-1">{errors.phone}</p>}
+                  </div>
+                  <div className="flex gap-2 justify-end">
+                    <button type="button" onClick={() => setOpen(false)} className="px-4 py-2 rounded-lg bg-surface-container text-on-surface hover:bg-surface-container-high">
+                      Batal
+                    </button>
+                    <button type="submit" disabled={submitting} className="px-4 py-2 rounded-lg bg-primary-container text-on-primary-container font-medium hover:bg-primary">
+                      {submitting ? "Memproses..." : "Lanjutkan Unduhan"}
+                    </button>
+                  </div>
+                </form>
               </div>
             </div>
           </div>,

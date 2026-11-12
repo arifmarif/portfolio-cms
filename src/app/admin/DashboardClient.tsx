@@ -3,6 +3,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { updateDraftSettings, publishSettings } from "./actions";
 import PhotoUpload from "@/components/PhotoUpload";
+import CvManager from "@/components/CvManager";
 import type { SiteSettings } from "@/lib/types";
 
 export default function DashboardClient({
@@ -50,6 +51,10 @@ export default function DashboardClient({
   function handleReset() {
     setDraft({ ...initialDraft });
     setStatus("Perubahan direset.");
+  }
+
+  function updateCv(v: { url: string; fileName: string; uploadedAt: string }) {
+    setDraft((d) => ({ ...d, cvUrl: v.url, cvFileName: v.fileName, cvUploadedAt: v.uploadedAt }));
   }
 
   const heroLen = draft.heroTitle.length;
@@ -157,6 +162,14 @@ export default function DashboardClient({
           <section className="rounded-xl bg-surface-container-low p-6 space-y-4">
             <h2 className="font-display text-lg font-semibold">Foto Profil</h2>
             <PhotoUpload value={draft.photoUrl} onChange={(v) => update("photoUrl", v)} />
+          </section>
+
+          <section className="rounded-xl bg-surface-container-low p-6 space-y-4">
+            <h2 className="font-display text-lg font-semibold">CV (Unduh CV)</h2>
+            <CvManager
+              value={{ url: draft.cvUrl || "", fileName: draft.cvFileName || "", uploadedAt: draft.cvUploadedAt || "" }}
+              onChange={updateCv}
+            />
           </section>
 
           <div className="flex flex-wrap gap-2">

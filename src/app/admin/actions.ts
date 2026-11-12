@@ -40,6 +40,12 @@ export async function updateDraftSettings(formData: FormData) {
   draft.portfolioUrl = String(formData.get("portfolioUrl") || draft.portfolioUrl);
   draft.availability = formData.get("availability") === "on";
   draft.primaryColor = String(formData.get("primaryColor") || draft.primaryColor);
+  const newCvUrl = String(formData.get("cvUrl") || draft.cvUrl || "");
+  const newCvFileName = String(formData.get("cvFileName") || draft.cvFileName || "");
+  const newCvUploadedAt = String(formData.get("cvUploadedAt") || draft.cvUploadedAt || "");
+  draft.cvUrl = newCvUrl;
+  draft.cvFileName = newCvFileName;
+  draft.cvUploadedAt = newCvUploadedAt;
   const newTaglineEn = String(formData.get("taglineEn") || draft.taglineEn || "");
   const newHeroTitleEn = String(formData.get("heroTitleEn") || draft.heroTitleEn || "");
   const newHeroSubtitleEn = String(formData.get("heroSubtitleEn") || draft.heroSubtitleEn || "");
@@ -80,6 +86,40 @@ export async function updateActiveTemplate(templateId: string) {
   state.draftSettings.draftUpdatedAt = new Date().toISOString();
   await writeState(state);
   revalidatePath("/admin/themes");
+}
+
+export async function setCvFile(url: string, fileName: string, uploadedAt: string) {
+  await requireAdmin();
+  const state = await readState();
+  state.draftSettings.cvUrl = url || "";
+  state.draftSettings.cvFileName = fileName || "";
+  state.draftSettings.cvUploadedAt = uploadedAt || "";
+  state.draftSettings.draftUpdatedAt = new Date().toISOString();
+  await writeState(state);
+  await logAudit("cv.update", fileName || url);
+  revalidatePath("/");
+}
+
+export async function deleteCvFile() {
+  await requireAdmin();
+  const state = await readState();
+  const url = state.draftSettings.cvUrl || "";
+  const fileName = state.draftSettings.cvFileName || "";
+  if (url) {
+    try {
+      const { del } = await import("@vercel/blob");
+      await del(url);
+    } catch {
+      // Blob storage cleanup is best-effort; local fallback files are removed below.
+    }
+  }
+  state.draftSettings.cvUrl = "";
+  state.draftSettings.cvFileName = "";
+  state.draftSettings.cvUploadedAt = "";
+  state.draftSettings.draftUpdatedAt = new Date().toISOString();
+  await writeState(state);
+  await logAudit("cv.delete", fileName || url);
+  revalidatePath("/");
 }
 
 export async function createProject(formData: FormData) {

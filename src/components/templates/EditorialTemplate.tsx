@@ -253,7 +253,7 @@ export function EditorialTemplate({ settings, projects }: { settings: SiteSettin
                 <a href="#kontak" className="px-6 py-3 rounded-lg text-on-surface font-medium underline decoration-outline-variant underline-offset-4 hover:text-primary transition-colors">
                   {L.hubungi}
                 </a>
-                <DownloadGate label={locale === "en" ? "Download PDF" : "Unduh PDF"} />
+                <DownloadGate label={locale === "en" ? "Download CV" : "Unduh CV"} cvUrl={settings.cvUrl} />
               </div>
               <div className="pt-4 flex flex-wrap gap-4 text-outline font-mono text-xs hero-fade-up" style={{ animationDelay: "580ms" }}>
                 <span>{settings.experienceYears}+ {locale === "en" ? "years experience" : "tahun pengalaman"}</span>

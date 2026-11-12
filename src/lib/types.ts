@@ -66,6 +66,9 @@ export interface SiteSettings {
   idUpdatedAt?: string;
   enUpdatedAt?: string;
   publishedAt?: string;
+  cvUrl?: string;
+  cvFileName?: string;
+  cvUploadedAt?: string;
 }
 
 export interface Template {

@@ -28,6 +28,9 @@ export const seedSettings: SiteSettings = {
   idUpdatedAt: new Date().toISOString(),
   enUpdatedAt: new Date().toISOString(),
   publishedAt: new Date().toISOString(),
+  cvUrl: "",
+  cvFileName: "",
+  cvUploadedAt: "",
 };
 
 export const seedProjects: Project[] = [
