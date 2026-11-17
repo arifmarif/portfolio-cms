@@ -20,6 +20,7 @@ function projectText(p: Project, locale: Locale) {
     title: locale === "en" ? p.titleEn || p.title : p.title,
     excerpt: locale === "en" ? p.excerptEn || p.excerpt : p.excerpt,
     description: locale === "en" ? p.descriptionEn || p.description : p.description,
+    category: locale === "en" ? p.categoryEn || p.category : p.category,
     altText: locale === "en" ? p.altTextEn || p.altText : p.altText,
     tags: locale === "en" ? p.tagsEn || p.tags : p.tags,
     gallery: p.gallery.map((g) => ({ url: g.url, alt: locale === "en" ? g.altEn || g.alt : g.alt })),
@@ -95,9 +96,9 @@ export function BoldTemplate({ settings, projects }: { settings: SiteSettings; p
                       {p.year && <span className="shrink-0 font-mono text-xs text-outline">{p.year}</span>}
                     </div>
                     <p className="text-on-surface-variant text-sm">{pt.excerpt}</p>
-                    {p.client || p.category ? (
+                    {p.client || pt.category ? (
                       <p className="pt-2 font-mono text-xs uppercase tracking-wider text-outline">
-                        {[p.client, p.category].filter(Boolean).join(" · ")}
+                        {[p.client, pt.category].filter(Boolean).join(" · ")}
                       </p>
                     ) : null}
                   </div>
